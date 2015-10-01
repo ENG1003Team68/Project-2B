@@ -1,3 +1,4 @@
+<html>
 <head>
 <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
 <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
@@ -31,6 +32,7 @@
   </main>
     
     <!Map>
+<div>    
   <head>
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
@@ -53,25 +55,26 @@ function initMap() {
   src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=&amp;callback=initMap">
     </script>
   </body>
+</div>
 
- 
-<!table>    
-<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" style=";margin-left:auto;margin-right:auto;display:block;margin-top:0%;margin-bottom:5%">
+<div>
+    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-left:auto;margin-right:auto;display:block;margin-top:0%;margin-bottom:0%">
+  <thead>
+    <tr>
+      <th class="mdl-data-table__cell--non-numeric">Time</th>
+      <th>Distance</th>
+      <th>Average Speed</th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td class="mdl-data-table__cell--non-numeric">Time</td>
-      <td>1:25</td>
-    </tr>
-    <tr>
-      <td class="mdl-data-table__cell--non-numeric">Distance</td>
-      <td>50km</td>
-    </tr>
-    <tr>
-      <td class="mdl-data-table__cell--non-numeric">Speed</td>
-      <td>10km/h</td>
+      <td class="mdl-data-table__cell--non-numeric">17:00</td>
+      <td>25km</td>
+      <td>2.90km/h</td>
     </tr>
   </tbody>
 </table>
+</div>
     
         <!-- Colored FAB button with ripple -->
 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" >
@@ -92,3 +95,4 @@ function initMap() {
     
 </div>
 </body>
+</html>
