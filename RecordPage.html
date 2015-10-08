@@ -6,6 +6,7 @@
 </head>
 
 <body>
+    
 <!-- Uses a header that scrolls with the text, rather than staying
   locked at the top -->
 <div class="mdl-layout mdl-js-layout">
@@ -27,6 +28,8 @@
         </button>
     </div>
   </header>
+    
+    
  <main class="mdl-layout__content">
     <div class="page-content"><!-- Your content goes here --></div>
   </main>
@@ -82,6 +85,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     <script async defer
   src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=&amp;callback=initMap">
     </script>
+      
   </body>
 </div>
 
@@ -96,7 +100,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   </thead>
   <tbody>
     <tr>
-      <td class="mdl-data-table__cell--non-numeric">17:00</td>
+      <td class="mdl-data-table__cell--non-numeric" id="output">00:00:00:0</td>
       <td>25km</td>
       <td>2.90km/h</td>
     </tr>
@@ -104,14 +108,10 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 </table>
 </div>
  <center>
-        <!-- Colored FAB button with ripple -->
-<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" >
-  <i class="material-icons">pause_circle_outline</i>
-</button>
-    
+     
     <!-- Colored FAB button with ripple -->
-<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" >
-    <i class="material-icons">play_circle_outline</i>
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="startPause" onclick="startPause()">
+    <i class="material-icons" id="play">play_circle_outline</i>
 </button>
     
         <!-- Colored FAB button with ripple -->
