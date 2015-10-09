@@ -3,10 +3,29 @@
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <style>
+            body {
+                background-image: url("nadal.jpg");
+            }
+            #recordTable th {
+                background-color: aquamarine;
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 15px;
+            }
+            #recordTable td {
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 25px;
+            }
+            #recordTable tr {
+                align-content: center;
+            }
+            {
+            background-color: coral;
+            }
+        </style>
     </head>
 
-    
-    
     <body>
     
         <script>
@@ -28,7 +47,6 @@
             function reset(){
                 running = 0;
                 time = 0;
-                document.getElementById("startPause").innerHTML = "Start";
                 document.getElementById("output").innerHTML = "00:00:00:0";
             }
             function increment(){
@@ -41,6 +59,9 @@
                     var secs = Math.floor(time/10 % 60);
                     var tenths = time % 10;
                     
+                    if(hours < 10){
+                        hours = "0" + hours;
+                    }
                     if(mins < 10){
                         mins = "0" + mins;
                     }
@@ -49,7 +70,7 @@
                     }
                     document.getElementById("output").innerHTML = hours + ":" + mins + ":" + secs + ":" + tenths;
                     increment();  
-                }, 100);
+                }, 1);
                 } 
             }
             </script>
@@ -59,6 +80,9 @@
             <div class="mdl-layout mdl-js-layout">
                 <header class="mdl-layout__header mdl-layout__header--scroll">
                     <div class="mdl-layout__header-row">
+                        <button class="mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">arrow_back</i>
+                        </button> 
                         <!-- Title -->
                         <span class="mdl-layout-title">Record Page (we can change the title later)</span>
                         <!-- Add spacer, to align navigation to the right -->
@@ -84,7 +108,7 @@
                     <head>
                         <style type="text/css">
                             html, body { height: 100%; margin: 0; padding: 0; }
-                            #map { height: 66%; }
+                            #map { height: 63%; }
                         </style>
                     </head>
                     <body>
@@ -133,7 +157,7 @@
                 </div>
 
                 <div>
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-left:auto;margin-right:auto;display:block;margin-top:0%;margin-bottom:0%">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-left:auto;margin-right:auto;display:block;margin-top:2%;margin-bottom:2%" id="recordTable">
                         <thead>
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">Time</th>
@@ -144,8 +168,8 @@
                         <tbody>
                             <tr>
                                 <td class="mdl-data-table__cell--non-numeric" id="output">00:00:00:0</td>
-                                <td>25km</td>
-                                <td>2.90km/h</td>
+                                <td id="">25km</td>
+                                <td id="">2.90km/h</td>
                             </tr>
                         </tbody>
                     </table>
@@ -153,12 +177,15 @@
                 
                 <center>   
                     <!-- Colored FAB button with ripple -->
-                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="startStop" onclick="startPause()">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="startPause()">
                         <i class="material-icons" id="play">play_circle_outline</i>
                     </button>
                     <!-- Colored FAB button with ripple -->
-                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" >
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                         <i class="material-icons">done</i>
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="reset()">
+                        <i class="material-icons" id="delete">delete</i>
                     </button>
                 </center>   
     
