@@ -1,0 +1,104 @@
+<html>
+
+    <head>
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
+      
+<!--        CODE FOR PUTTING AN ICON ON THE HEADER
+
+<label class="mdl-button mdl-js-button mdl-button--icon"
+               for="fixed-header-drawer-exp">
+          <i class="material-icons">search</i>
+</label>
+-->
+    <body>
+<!-- The drawer is always open in large screens. The header is always shown,
+  even in small screens. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+            mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+                    </div>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+    
+            <span class="mdl-layout-title">Title</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+            </nav>
+        </div>
+  
+        <main class="mdl-layout__content">
+            <div class="page-content">
+        <!-- Screen Heading -->
+            <h1 style="font-family:calibri;text-align:center;margin-top:15%">Welcome!   </h1> 
+        <!-- Wide card -->
+        <!-- This component should display the total distance travelled for each activity-->
+            <style>
+                .demo-card-wide.mdl-card {
+                        width: 512px;
+                }
+                .demo-card-wide > .mdl-card__title {
+                        color: #fff;
+                        height: 176px;
+                        background: url('../assets/demos/welcome_card.jpg') center / cover;
+                }
+                .demo-card-wide > .mdl-card__menu {
+                        color: #fff;
+                }
+            </style>
+
+            <div class="demo-card-wide mdl-card mdl-shadow--2dp" style=";margin-left:auto;margin-right:auto;display:block;margin-top:2%;margin-bottom:2%">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text"><font color="blue">Welcome</font></h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    Doing well so far!
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        Get Started
+                    </a>
+                </div>
+                <div class="mdl-card__menu">
+                </div>
+            </div>
+
+              
+            <center>
+        <!-- Accent-colored raised button onclick="location.href='-->
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect mdl-button--colored" onclick="location.href='file:///C:/Users/Alex/Google%20Drive/ENG1003/ENG1003Project1/Project%202/Code/LengthPage.html';">
+                    Record
+                </button>
+        <!-- Accent-colored raised button -->
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect">
+                    History
+                </button>
+            </center> 
+      
+            <center>
+        <!-- Accent-colored raised button -->
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect" style=";margin-top:2%">
+                    Instructions
+                </button>
+            </center>
+      </div>
+  </main>
+</div>
+   
+    </body> 
+    
+    
+    
+    
+    
+    </html>
