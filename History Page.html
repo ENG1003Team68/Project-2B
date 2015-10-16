@@ -9,7 +9,7 @@
                 background-image: url("nadal.jpg");
                 background-size: 100%;
             }
-            .longestRun{
+            .viewRun{
                 width: 200px;
                 height: 50px;
                 border: 5px double grey;
@@ -40,27 +40,28 @@
                         <i class="material-icons">arrow_back</i>
                     </button>
                         <!-- Title -->
-                    <span class="mdl-layout-title">Activity History</span>
+                    <span class="mdl-layout-title" style="margin-left:2%">Activity History</span>
                         <!-- Add spacer, to align navigation to the right -->
                     <div class="mdl-layout-spacer"></div>   
                 </div>
             </header>
        </div>
   
-        
         <center>
         <br><br>
         <br><br>
         <br><br>
-            <div class="longestRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Most Recent </ins></p></div>
-        <br><br><textarea rows="6" cols="40" style="font-size:150%;font-family:calibri"> 
-            Morning Run
-            12/07/15
-        </textarea>
+            <div class="viewRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Most Recent </ins></p></div>
+        <br><br>      
+            <div data-role="content">
+                <ul data-role="listview" id="runs-list">
+			<!-- content is inserted by JavaScript here -->
+                </ul>
+            </div>
             
         <br><br>
         <br><br>
-            <div class="longestRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Longest Run </ins></p></div>
+            <div class="viewRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Longest Run </ins></p></div>
         <br><br><textarea rows="6" cols="40" style="font-size:150%;font-family:calibri"> 
             Afternoon Ride
             11/05/15
@@ -71,5 +72,53 @@
         <br><br>
         </center>
         
+        <script>
+        
+            var runsListElement = Document.getElementById('runs-list');
+            var routes = [];
+            
+            $('#runs-list').delegate('li', 'tap', listRowTapped);
+        
+            	// Make the request
+	        var data = {
+                airline: "QF",
+                sourceAirport: "LAX",
+                callback: "routesResponse"
+	        };	    
+            jsonpRequest("https://eng1003.eng.monash.edu/OpenFlights/routes/", data);
+ 	
+	        function jsonpRequest(url, data)
+	        {
+                // Build URL parameters from data object.
+                var params = "";
+                // For each key in data object...
+                for (var key in data)
+                {
+                    if (data.hasOwnProperty(key))
+                    {
+                        if (params.length == 0)
+                        {
+                            // First parameter starts with '?'
+                            params += "?";
+				        }
+				        else
+                        {
+                            // Subsequent parameter separated by '&'
+                            params += "&";
+                        }
+
+                        var encodedKey = encodeURIComponent(key);
+                        var encodedValue = encodeURIComponent(data[key]);
+
+                        params += encodedKey + "=" + encodedValue;
+                    }
+                }
+                var script = document.createElement('script');
+                script.src = url + params;
+                document.body.appendChild(script);
+            }
+        
+            
+        </script>
     </body> 
 </html>
