@@ -1,47 +1,124 @@
 <html>
-
     <head>
-<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
-<script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <style>
+            body{
+                background-image: url("nadal.jpg");
+                background-size: 100%;
+            }
+            .viewRun{
+                width: 200px;
+                height: 50px;
+                border: 5px double grey;
+                background-color: aliceblue;
+                display: block;
+                opacity: 0.9;
+                filter: alpha(opacity=60);
+            }
+            textarea{
+                font-family:calibri;
+                vertical-align: middle;
+                border: 4px solid grey;
+                opacity: 0.9;
+                filter: alpha(opacity=60);
+            }
+        </style>
+
+        
     </head>
         
-   <body>
+    <body>
  <!-- Uses a header that scrolls with the text, rather than staying
   locked at the top -->
-<div class="mdl-layout mdl-js-layout">
-  <header class="mdl-layout__header mdl-layout__header--scroll">
-    <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <span class="mdl-layout-title">Activity History</span>
-      <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>   
-        </div>
-       <!--back arrow-->
-     <!--http://stackoverflow.com/questions/31362929/how-to-make-icon-move-to-the-left-on-mdl-header-->
-      <div>
-      <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='file:///Users/nikolaevskynir/Desktop/ENG1003/project2b-constant/code/index_updated.html?';">
-       <i class="material-icons">arrow_back</i>
-      </button> 
-      </div>
-  </header>
+        <div class="mdl-layout mdl-js-layout">
+            <header class="mdl-layout__header mdl-layout__header--scroll">
+                <div class="mdl-layout__header-row">
+                    <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='index_updated.html';">
+                        <i class="material-icons">arrow_back</i>
+                    </button>
+                        <!-- Title -->
+                    <span class="mdl-layout-title" style="margin-left:2%">Activity History</span>
+                        <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>   
+                </div>
+            </header>
        </div>
- <br><br>
-       <br><br>
-<br><br><p style="color:blue;font-size:200%;font-family:courier"> Most Recent </p>
-<br><br><textarea rows="4" cols="20" style="color:blue;font-size:200%;font-family:courier"> 
-Morning Run
-12/07/15
-</textarea>
-<br><br>
-<br><br><p style="color:blue;font-size:200%;font-family:courier"> Longest Run </p>
-<br><br><textarea rows="4" cols="20" style="color:blue;font-size:200%;font-family:courier"> 
-Afternoon Ride
-11/05/15
-</textarea>
+  
+        <center>
+        <br><br>
+        <br><br>
+        <br><br>
+            <div class="viewRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Most Recent </ins></p></div>
+        <br><br>      
+            <div data-role="content">
+                <ul data-role="listview" id="runs-list">
+			<!-- content is inserted by JavaScript here -->
+                </ul>
+            </div>
+            
+        <br><br>
+        <br><br>
+            <div class="viewRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Longest Run </ins></p></div>
+        <br><br><textarea rows="6" cols="40" style="font-size:150%;font-family:calibri"> 
+            Afternoon Ride
+            11/05/15
+        </textarea>
 
-<br><br>
-<br><br>
-<br><br>
+        <br><br>
+        <br><br>
+        <br><br>
+        </center>
+        
+        <script>
+        
+            var runsListElement = Document.getElementById('runs-list');
+            var routes = [];
+            
+            $('#runs-list').delegate('li', 'tap', listRowTapped);
+        
+            	// Make the request
+	        var data = {
+                airline: "QF",
+                sourceAirport: "LAX",
+                callback: "routesResponse"
+	        };	    
+            jsonpRequest("https://eng1003.eng.monash.edu/OpenFlights/routes/", data);
+ 	
+	        function jsonpRequest(url, data)
+	        {
+                // Build URL parameters from data object.
+                var params = "";
+                // For each key in data object...
+                for (var key in data)
+                {
+                    if (data.hasOwnProperty(key))
+                    {
+                        if (params.length == 0)
+                        {
+                            // First parameter starts with '?'
+                            params += "?";
+				        }
+				        else
+                        {
+                            // Subsequent parameter separated by '&'
+                            params += "&";
+                        }
+
+                        var encodedKey = encodeURIComponent(key);
+                        var encodedValue = encodeURIComponent(data[key]);
+
+                        params += encodedKey + "=" + encodedValue;
+                    }
+                }
+                var script = document.createElement('script');
+                script.src = url + params;
+                document.body.appendChild(script);
+            }
+        
+            
+        </script>
     </body> 
-    </html>
+</html>
