@@ -1,51 +1,79 @@
 <html>
-
     <head>
-<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
-<script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <style>
+            body{
+                background-image: url("nadal.jpg");
+                background-size: 100%;
+            }
+            .longestRun{
+                width: 200px;
+                height: 50px;
+                border: 5px double grey;
+                background-color: aliceblue;
+                display: block;
+                opacity: 0.9;
+                filter: alpha(opacity=60);
+            }
+            textarea{
+                font-family:calibri;
+                vertical-align: middle;
+                border: 4px solid grey;
+                opacity: 0.9;
+                filter: alpha(opacity=60);
+            }
+        </style>
+
+        
     </head>
         
-   <body>
+    <body>
  <!-- Uses a header that scrolls with the text, rather than staying
   locked at the top -->
-<div class="mdl-layout mdl-js-layout">
-  <header class="mdl-layout__header mdl-layout__header--scroll">
-    <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <span class="mdl-layout-title">Activity History</span>
-      <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>   
-        </div>
-       <!--back arrow-->
-     <!--http://stackoverflow.com/questions/31362929/how-to-make-icon-move-to-the-left-on-mdl-header-->
-      <div>
-      <button class="mdl-button mdl-js-button mdl-button--icon">
-       <i class="material-icons">arrow_back</i>
-      </button> 
-      </div>
-  </header>
+        <div class="mdl-layout mdl-js-layout">
+            <header class="mdl-layout__header mdl-layout__header--scroll">
+                <div class="mdl-layout__header-row">
+                        <!-- Title -->
+                    <span class="mdl-layout-title">Activity History</span>
+                        <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>   
+                </div>
+                    <!--back arrow-->
+                    <!--http://stackoverflow.com/questions/31362929/how-to-make-icon-move-to-the-left-on-mdl-header-->
+                <div>
+                    <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='file:///Users/nikolaevskynir/Desktop/ENG1003/project2b-constant/code/index_updated.html?';">
+                        <i class="material-icons">arrow_back</i>
+                    </button> 
+                </div>
+            </header>
        </div>
- <br><br>
-       <br><br>
-<br><br><p style="color:blue;font-size:200%;font-family:courier"> Most Recent </p>
-<br><br><textarea rows="4" cols="20" style="color:blue;font-size:200%;font-family:courier"> 
-Morning Run
-12/07/15
-</textarea>
-<br><br>
-<br><br><p style="color:blue;font-size:200%;font-family:courier"> Longest Run </p>
-<br><br><textarea rows="4" cols="20" style="color:blue;font-size:200%;font-family:courier"> 
-Afternoon Ride
-11/05/15
-</textarea>
+  
+        
+        <center>
+        <br><br>
+        <br><br>
+        <br><br>
+            <div class="longestRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Most Recent </ins></p></div>
+        <br><br><textarea rows="6" cols="40" style="font-size:150%;font-family:calibri"> 
+            Morning Run
+            12/07/15
+        </textarea>
+            
+        <br><br>
+        <br><br>
+            <div class="longestRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Longest Run </ins></p></div>
+        <br><br><textarea rows="6" cols="40" style="font-size:150%;font-family:calibri"> 
+            Afternoon Ride
+            11/05/15
+        </textarea>
 
-<br><br>
-<br><br>
-<br><br>
-<!-- Colored FAB button with ripple -->
-<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-  <i class="material-icons">delete</i>
-</button>
+        <br><br>
+        <br><br>
+        <br><br>
+        </center>
+        
     </body> 
-    </html>
+</html>
