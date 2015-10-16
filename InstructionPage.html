@@ -1,41 +1,79 @@
-<head>
-<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
-<script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</head>
+<html>
 
-<body>
-<!-- Simple header with scrollable tabs. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
+    <head>
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <style>
+            body{
+                background-image: url("nadal.jpg");
+                background-size: 100%;
+            }
+            .page-content{
+                width:  1000px;
+                height: 400px;
+                float:  left;
+                padding:    20px;
+                background-color: aliceblue;
+                margin-top:     5%;
+                margin-left:    20%;
+                opacity: 0.85;
+                filter: alpha(opacity=60);               
+            }
+        </style>
+    </head>
+
+    <body>
+            <!-- Simple header with scrollable tabs. -->
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
       <!-- Title -->
-      <span class="mdl-layout-title">Instructions</span>
-    </div>
+                    <span class="mdl-layout-title">Instructions</span>
+                </div>
     <!-- Tabs -->
-    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-      <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Getting Started</a>
-      <a href="#scroll-tab-2" class="mdl-layout__tab">Recording the Run</a>
-      <a href="#scroll-tab-3" class="mdl-layout__tab">Viewing Run History</a>
-    </div>
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+                    <a href="#scroll-tab-1" class="mdl-layout__tab is-active">Getting Started</a>
+                    <a href="#scroll-tab-2" class="mdl-layout__tab">Recording the Run</a>
+                    <a href="#scroll-tab-3" class="mdl-layout__tab">Viewing Run History</a>
+                </div>
              <!--back arrow-->
      <!--http://stackoverflow.com/questions/31362929/how-to-make-icon-move-to-the-left-on-mdl-header-->
-      <div>
-      <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='file:///Users/nikolaevskynir/Desktop/ENG1003/project2b-constant/code/index_updated.html?';">
-       <i class="material-icons">arrow_back</i>
-      </button> 
-      </div>
-  </header>
-  <main class="mdl-layout__content">
-    <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-      <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-2">
-      <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-3">
-      <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-  </main>
-</div>
-</body>
+                <div>
+                    <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='file:///Users/nikolaevskynir/Desktop/ENG1003/project2b-constant/code/index_updated.html?';">
+                        <i class="material-icons">arrow_back</i>
+                    </button> 
+                </div>
+                
+            </header>
+            <main class="mdl-layout__content">
+                <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+                    <div class="page-content">
+                        <h3>How does it work??</h3>
+                            <p>
+                                Welcome to our 'Do It!' fitness app!
+                            </p>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+                    <div class="page-content">
+                        <h3>I want to get started!</h3>
+                            <p>
+                                To record a 'run', press the 'Record' button on the home screen.
+                            </p>
+                    </div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+                    <div class="page-content">
+                        <h3>Viewing past 'runs'</h3>
+                            <p>
+                                You can view all your previous 'runs' that you have completed in the past in the 'History' section.
+                            </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+    
+</html>
