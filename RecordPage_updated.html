@@ -20,8 +20,8 @@
             #recordTable tr {
                 align-content: center;
             }
-            {
-            background-color: coral;
+            table{
+                display: inline-block;
             }
         </style>
     </head>
@@ -32,23 +32,50 @@
             <!-- Timer Function -->
             var time = 0;
             var running = 0;
-            var started;
+            var select = 0;
+            var modeWalk = 0, modeRun = 0, modeCycle = 0;
             
             function startPause(){
-                if(running == 0){
+                if(modeWalk == 0 && modeCycle == 0 && modeRun == 0){
+                    alert("Select an Activity first!");
+                }
+                    else{
+                    select = 1;
+                    }
+                if(running == 0 && select == 1){
                     running = 1;
                     increment();
                     document.getElementById("play").innerHTML = "pause_circle_outline";
-                }else{
-                    running = 0;
-                     document.getElementById("play").innerHTML = "play_circle_outline";
+                    document.getElementById("recordStatus").innerHTML = "Recording!";
+                        }
+                    else{
+                        running = 0;
+                        document.getElementById("play").innerHTML = "play_circle_outline";
+                    }
+                if(running == 0 && time > 0){
+                document.getElementById("recordStatus").innerHTML = "Paused";
                 }
             }
+
+            
             function reset(){
-                running = 0;
-                time = 0;
-                document.getElementById("output").innerHTML = "00:00:00:0";
+                if(running == 0 && time > 0){
+                    running = 0;
+                    time = 0;
+                    select = 0;
+                    modeWalk = 0;
+                    modeRun = 0;
+                    modeCycle = 0;
+                    document.getElementById("output").innerHTML = "00:00:00:0";
+                    document.getElementById("modeOutput").innerHTML = "Select an Activity";
+                    document.getElementById("recordStatus").innerHTML = "Not Recording";
+                    alert("Run has been deleted!");
+                }
+                else if(time == 0){
+                    var error = alert("Record a run first by pressing the start button!");
+                }
             }
+            
             function increment(){
                 if(running == 1){
                 setTimeout(function(){
@@ -70,8 +97,64 @@
                     }
                     document.getElementById("output").innerHTML = hours + ":" + mins + ":" + secs + ":" + tenths;
                     increment();  
-                }, 1);
+                }, 100);
                 } 
+            }
+            
+            
+            function finish(){
+                if(running == 0 && time > 0){
+                    var description = prompt("Enter a description of your run:", "Enter Description...");   
+                }
+                else if(running == 0 || time == 0){
+                    var error = alert("Record a run first by pressing the start button!");
+                }
+            
+            }
+            
+            function run(){
+                
+                if(running == 0 && time == 0){
+                    modeRun = 1;
+                    if(modeCycle == 1 || modeWalk == 1){
+                        modeCycle = 0;
+                        modeWalk = 0;
+                    }
+                    var mode = document.getElementById("modeOutput");
+                    mode.innerHTML = "Running";
+                }
+                else{
+                }
+            }
+                
+            function cycle(){
+                
+                if(running == 0 && time == 0){
+                    modeCycle = 1;
+                    if(modeRun == 1 || modeWalk == 1){
+                        modeRun = 0;
+                        modeWalk = 0;
+                    }
+                    var mode = document.getElementById("modeOutput");
+                    mode.innerHTML = "Cycling";
+                }
+                else{
+                }
+            }
+            
+            function walk(){
+                
+                if(running == 0 && time == 0){
+                    modeWalk = 1;
+                    if(modeCycle == 1 || modeRun == 1){
+                        modeCycle = 0;
+                        modeRun = 0;
+                    }
+                    var mode = document.getElementById("modeOutput");
+                    mode.innerHTML = "Walking";
+                }
+                else{
+                }
             }
             </script>
         
@@ -80,21 +163,21 @@
             <div class="mdl-layout mdl-js-layout">
                 <header class="mdl-layout__header mdl-layout__header--scroll">
                     <div class="mdl-layout__header-row">
-      <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='file:///Users/nikolaevskynir/Desktop/ENG1003/project2b-constant/code/index_updated.html?';">
+      <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='index_updated.html';">
        <i class="material-icons">arrow_back</i>
       </button> 
                         <!-- Title -->
-                        <span class="mdl-layout-title">Record Page (we can change the title later)</span>
+                        <span class="mdl-layout-title" style="margin-left:2%">Record Page (we can change the title later)</span>
                         <!-- Add spacer, to align navigation to the right -->
                         <div class="mdl-layout-spacer"></div>
                         <!-- Colored FAB button with ripple -->
-                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="run()">
                             <i class="material-icons">directions_run</i>
                         </button>
-                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="cycle()">
                             <i class="material-icons">directions_bike</i>
                         </button>
-                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="walk()">
                             <i class="material-icons">directions_walk</i>
                         </button>
                     </div>
@@ -108,7 +191,7 @@
                     <head>
                         <style type="text/css">
                             html, body { height: 100%; margin: 0; padding: 0; }
-                            #map { height: 63%; }
+                            #map { height: 63%; width: 50%; margin-top: 1%; margin: auto;}
                         </style>
                     </head>
                     <body>
@@ -155,9 +238,24 @@
                         </script>
                     </body>
                 </div>
-
-                <div>
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-left:auto;margin-right:auto;display:block;margin-top:2%;margin-bottom:2%" id="recordTable">
+                
+                <center>
+                <div>   
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td id="recordStatus">Not Recording</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:2%;margin-left:2%;" id="recordTable">
                         <thead>
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">Time</th>
@@ -173,15 +271,31 @@
                             </tr>
                         </tbody>
                     </table>
+                    
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%" id="mode">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td id="modeOutput">Select an activity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
                 </div>
-                
+                </center>
+                    
                 <center>   
                     <!-- Colored FAB button with ripple -->
                     <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="startPause()">
                         <i class="material-icons" id="play">play_circle_outline</i>
                     </button>
                     <!-- Colored FAB button with ripple -->
-                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="finish()">
                         <i class="material-icons">done</i>
                     </button>
                     <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="reset()">
@@ -192,4 +306,5 @@
     
         </div>
     </body>
+
 </html>
