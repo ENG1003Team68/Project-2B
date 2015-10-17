@@ -8,20 +8,34 @@
             body {
                 background-image: url("nadal.jpg");
             }
-            #recordTable th {
+            #recordTable th, #statusTable th, #modeTable th{
                 background-color: aquamarine;
                 font-family: "Trebuchet MS", Helvetica, sans-serif;
-                font-size: 15px;
+                font-size: 25px;
+                text-align:center;
             }
             #recordTable td {
                 font-family: "Trebuchet MS", Helvetica, sans-serif;
-                font-size: 25px;
+                font-size: 35px;
+                text-align:center;
+            }
+            #statusTable td, #modeTable td{
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 30px;  
+                text-align:center;
             }
             #recordTable tr {
                 align-content: center;
             }
-            table{
+            #recordTable{
                 display: inline-block;
+            }
+            #statusTable, #modeTable{
+                display: inline-block;            
+            }
+            #functions{
+                margin-bottom: 10%;
+                margin-top: 4%;
             }
         </style>
     </head>
@@ -160,7 +174,7 @@
         
 <!-- Uses a header that scrolls with the text, rather than staying
   locked at the top -->
-            <div class="mdl-layout mdl-js-layout">
+            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
                 <header class="mdl-layout__header mdl-layout__header--scroll">
                     <div class="mdl-layout__header-row">
       <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='index_updated.html';">
@@ -191,7 +205,7 @@
                     <head>
                         <style type="text/css">
                             html, body { height: 100%; margin: 0; padding: 0; }
-                            #map { height: 63%; width: 50%; margin-top: 1%; margin: auto;}
+                            #map { height: 55%; width: 75%; margin-top: 5%; margin-left: auto; margin-right: auto; margin-bottom: 10%;}
                         </style>
                     </head>
                     <body>
@@ -241,20 +255,6 @@
                 
                 <center>
                 <div>   
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            <tr>
-                                <td id="recordStatus">Not Recording</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
                     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:2%;margin-left:2%;" id="recordTable">
                         <thead>
                             <tr>
@@ -271,8 +271,24 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
                     
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%" id="mode">
+                <div>
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:4%" id="statusTable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td id="recordStatus">Not Recording</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%" id="modeTable">
                         <thead>
                             <tr>
                                 <th>Activity</th>
@@ -289,7 +305,7 @@
                 </div>
                 </center>
                     
-                <center>   
+                <center id="functions">   
                     <!-- Colored FAB button with ripple -->
                     <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="startPause()">
                         <i class="material-icons" id="play">play_circle_outline</i>
