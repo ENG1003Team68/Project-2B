@@ -59,6 +59,19 @@
                 if(running == 0 && select == 1){
                     running = 1;
                     increment();
+                  //displaying the run as a polyline
+              	   routePolyline = new google.maps.Polyline({
+    		         path: route.latlng,
+    			     map: map,
+    		         strokeColor: '#FF0000',
+    		         strokeOpacity: 1.0,
+    		         strokeWeight: 2
+  			       });
+                    var Startmarker = new google.maps.Marker({
+                    position: route.latlng[0],
+                    map: map,
+                    title: 'Start location'
+                    });
                     document.getElementById("play").innerHTML = "pause_circle_outline";
                     document.getElementById("recordStatus").innerHTML = "Recording!";
                         }
@@ -217,30 +230,41 @@
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
                                     zoom: 17
-                                });
-                           
-                                    // Try HTML5 geolocation.
-                                if (navigator.geolocation) {
-                                    navigator.geolocation.getCurrentPosition(function(position) {
-                                        var pos = {
-                                            lat: position.coords.latitude,
-                                            lng: position.coords.longitude
-                                        };
-                                            var marker = new google.maps.Marker({
-                                position: pos,
+                            
+                                var positionMarker = new google.maps.Marker({
+                                position: route,
                                 map: map,
-                                title: 'Start Location'
+                                title: 'Current location'
+                                }); 
                                 });
-                                
-                                        var marker = new google.maps.Marker({
-                                position: pos,
-                                map: map,
-                                title: 'Start Location'
-                                });
-                                        map.setCenter(pos);
-                                        }
-                                    )
+                           	
+                            setInterval(function() {
+                                navigator.geolocation.getCurrentPosition(positionUpdate);
+			                     }, 1000);
+                            
+                            //runs every second and updates path and dom
+                            function positionUpdate(position) {
+                                map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
+route = route.latlng
+                                if (running = 1){
+                                    //storing the position objects and the timestamp in the path array
+                                    route.latlng[i] = {lat: position.coords.latitude, lng:               position.coords.longitude};
+                                    route.time[i] = currentPos.timestamp;
+                                    i++  
+                                            
+                                    //updating the polyline
+                                    routePolyline.setRoute(route.latlng);
                                 }
+
+                                else if (running = 0){
+                                    // storing current position as the initial value of path so that the polyline will have an initial value on record.
+              	                 route.latlng[0] = {lat: position.coords.latitude, lng:           position.coords.longitude};
+                                 route.time[0] = position.timestamp;
+                                }
+
+                                positionMarker.setPosition({lat: currentPos.coords.latitude, lng: currentPos.coords.longitude});
+                                }
+                            
                             }
                             
 
