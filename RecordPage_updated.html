@@ -263,10 +263,10 @@
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
                                     zoom: 17
-                                      mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                    scrollwheel: false,
-                                    draggable: false,
-                                    disableDefaultUI: true
+                                    //mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                    //scrollwheel: false,
+                                    //draggable: false,
+                                    //disableDefaultUI: true
                                     });
                             
                                  navigator.geolocation.watchPosition(positionUpdate,undefined,{enableHighAccuracy: true})
@@ -275,7 +275,7 @@
                             function positionUpdate(position) {
                                 map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
 route = route.latlng
-                                if (running = 1){
+                                if (running == 1){
                                     run.lat = position.coords.latitude;
                                     run.lng = position.coords.longitude; 
                                     currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
@@ -292,7 +292,7 @@ route = route.latlng
                                   
                                 }
 
-                                else if (running = 0){
+                                else if (running == 0){
                                     // storing current position as the initial value of path so that the polyline will have an initial value on record.
               	                 run.lat = position.coords.latitude;
                                     run.lng = position.coords.longitude; 
