@@ -47,14 +47,15 @@
         <script>
         
             var Run = {
-                lat: 0 ,
+                lat: 0,
                 lng: 0,
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
                 description: "" ,
-                extraComments: ""
+                extraComments: "",
+                mode: ""
             };
             <!-- Timer Function -->
             var time = 0;
@@ -132,6 +133,7 @@
             var i = 0;
             function finish(){
                 if(running == 0 && time > 0){
+                    
                     var description = prompt("Enter a description of your run:", "Enter Description...");   
                     Run.description = description; 
                     
@@ -144,6 +146,13 @@
                     Run.minutes = mins;
                     Run.seconds = secs;
                     Run.tenths = tenths;
+                    
+                    if(modeCycle == 1)
+                    Run.mode = "Cycling"; 
+                    else if (modeRun ==1)
+                        Run.mode = "Running";
+                    else if (modeWalk == 1)
+                        Run.mode = "Walking";
                     
                     var dataString = JSON.stringify(Run);
                     localStorage.setItem("runSummary"+i,dataString)
