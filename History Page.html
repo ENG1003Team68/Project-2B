@@ -1,12 +1,15 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>  
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         
         <div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
                 <img src='sonic4.jpeg' style='width:100%;height:100%' alt='[]' />
-                </div>
+        </div>
         
         
         <script>
@@ -63,6 +66,7 @@
                 opacity: 0.9;
                 filter: alpha(opacity=60);
             }
+            
         </style>
 
         
@@ -94,7 +98,7 @@
             <div class="viewRun"><p style="color:blue;font-size:200%;font-family:calibri;text-align:center"><ins> Most Recent </ins></p></div>
         <br><br>      
             <div data-role="content">
-                <ul data-role="listview" id="runs-list">
+                <ul data-role="listview" id="flights-list">
 			<!-- content is inserted by JavaScript here -->
                 </ul>
             </div>
@@ -117,6 +121,7 @@
         
         
         <script>
+<<<<<<< HEAD
         var itemsRaw = [],itemsParse = [];
         var n = localStorage.length;
             for(var i = 0;i<n;i++){
@@ -134,7 +139,106 @@
         function deleteLocal(){
             localStorage.clear();
    
+=======
+        
+var flightsListElement = document.getElementById('flights-list');
+	var routes = [];
+ 
+    // Handle the user tapping on rows in list by calling listRowTapped().
+    // jQuery Mobile magic.
+    $('#flights-list').delegate('li', 'tap', listRowTapped);
+	
+	// Make the request
+	var data = {
+		airline: "QF",
+		sourceAirport: "LAX",
+		callback: "routesResponse"
+	};	
+	jsonpRequest("https://eng1003.eng.monash.edu/OpenFlights/routes/", data);
+ 	
+	function jsonpRequest(url, data)
+	{
+		// Build URL parameters from data object.
+		var params = "";
+		// For each key in data object...
+		for (var key in data)
+		{
+			if (data.hasOwnProperty(key))
+			{
+				if (params.length == 0)
+				{
+					// First parameter starts with '?'
+					params += "?";
+				}
+				else
+				{
+					// Subsequent parameter separated by '&'
+					params += "&";
+				}
+
+				var encodedKey = encodeURIComponent(key);
+				var encodedValue = encodeURIComponent(data[key]);
+
+				params += encodedKey + "=" + encodedValue;
+			 }
+		}
+		var script = document.createElement('script');
+		script.src = url + params;
+		document.body.appendChild(script);
+	}
+  
+	function routesResponse(routesArray)
+	{
+		routes = routesArray;
+		
+	    // List view section heading: Flight list
+	    var listHTML = "";
+
+		//   PART 1:
+	    // ADD CODE HERE TO ITERATE OVER ROUTES ARRAY AND CREATE
+		// LIST ITEMS FOR EACH ROUTE (AS BELOW)
+		for(var i=0 ; i < routes.length ; i++){
+        
+        listHTML += "<li>" + routes[i].sourceAirport + " &rarr; " + routes[i].destinationAirport;
+        listHTML += "<div class=\"subtitle\">" + routes[i].airline + ", Stops: " + routes[i].stops +"</div></li>";
+        
+>>>>>>> master
         }
+        
+	    // Insert the list view elements into the flights list.
+	    flightsListElement.innerHTML = listHTML;
+        // Update jQuery Mobile style for new elements.
+        $('#flights-list').listview('refresh');
+
+	}
+	
+	function airportResponse(airport)
+	{
+		var message = "Name: " + airport.name + "\n";
+		message += "Location: " + airport.city + ", " + airport.country;
+		alert(message);
+	}
+ 
+    function listRowTapped()
+    {
+        // The index of the route item tapped on.  jQuery Mobile magic.
+        var routesIndex = $(this).index();
+		
+		console.log(routes[routesIndex].destinationAirport + "(" + routes[routesIndex].destinationAirportId + ")");
+
+		//   PART 2:
+		// ADD CODE HERE TO REQUEST AIRPORT INFORMATION
+        // Make the request
+	var data = {
+		id: routes[routesIndex].destinationAirportId,
+		callback: "airportResponse"
+	};	
+	jsonpRequest("https://eng1003.eng.monash.edu/OpenFlights/airport/", data);
+ 	
+	}
+        
+            
         </script>
+
     </body> 
 </html>
