@@ -48,14 +48,24 @@
             // Declaring Global Variables
             // Creating an object where all data for the 'run' is stored.
             var Run = {
+<<<<<<< HEAD
                 description: "" ,
                 extraComments: "",
                 mode: "",
+=======
+>>>>>>> refs/remotes/origin/master
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
+<<<<<<< HEAD
                 route: []
+=======
+                description: "" ,
+                extraComments: "",
+                mode: "",
+                path: []
+>>>>>>> refs/remotes/origin/master
             };
 
             var routelineCoordinates = [];
@@ -174,7 +184,7 @@
                 } 
             }
             
-            var i = 0;
+            var i = Date.now();
             function finish(){
                 if(running == 0 && time > 0){
                     
@@ -199,8 +209,9 @@
                         Run.mode = "Walking";
                     
                     var dataString = JSON.stringify(Run);
+                    
                     localStorage.setItem("runSummary"+i,dataString)
-                    i = i+1;
+                    
                     
                     //Erases all info and starts again
                     running = 0;
