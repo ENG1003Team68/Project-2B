@@ -73,8 +73,13 @@
         </center>
         
         <script>
-        
-
+        var itemsRaw = [],itemsParse = [];
+        var n = localStorage.length;
+            for(var i = 0;i<n;i++){
+                var key = localStorage.key(i);
+                itemsRaw(i) = localStorage.getItem(key);
+                itemsParse(i) = JSON.parse(itemRaw(i));
+            }
         
             
         </script>
