@@ -57,12 +57,19 @@
                 extraComments: "",
                 mode: ""
             };
+
+            var routelineCoordinates = [];
+            var coordinates = {
+                    lat: 0,
+                    lng: 0
+                };
+            
             <!-- Timer Function -->
             var time = 0;
             var running = 0;
             var select = 0;
             var modeWalk = 0, modeRun = 0, modeCycle = 0;
-            
+            var currentMarker, startMarker;
             function startPause(){
                 if(modeWalk == 0 && modeCycle == 0 && modeRun == 0){
                     alert("Select an Activity first!");
@@ -80,14 +87,23 @@
                             map: map,
                             title: 'Current Point'    
                     });
-                   });
+                     startMarker= new google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Start Point'    
+                    });    
+                    });
+                    
+                    var intervalID = setInterval(initMap(), 100)
                     
                     document.getElementById("play").innerHTML = "pause_circle_outline";
                     document.getElementById("recordStatus").innerHTML = "Recording!";
+                    
                         }
                     else{
                         running = 0;
                         document.getElementById("play").innerHTML = "play_circle_outline";
+                        clearInterval(intervalID);
                     }
                 if(running == 0 && time > 0){
                 document.getElementById("recordStatus").innerHTML = "Paused";
@@ -102,6 +118,9 @@
                     modeWalk = 0;
                     modeRun = 0;
                     modeCycle = 0;
+                    routelineCoordinates = [];
+                    coordinates = { lat: 0, lng: 0 };
+                    
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
                     document.getElementById("recordStatus").innerHTML = "Not Recording";
@@ -133,7 +152,7 @@
                     }
                     document.getElementById("output").innerHTML = hours + ":" + mins + ":" + secs + ":" + tenths;
                     increment();  
-                }, 1);
+                }, 100);
                 } 
             }
             
@@ -271,13 +290,13 @@
                         <script type="text/javascript">
 
                          
-                            var route = {
-                                title: "",
-                                paths:[]
-                            };
+                          //  var route = {
+                              //  title: "",
+                                //paths:[]
+                           // };
                             
                             
-                            var map;
+                            var map, flightPath;
                             function initMap() {
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
@@ -287,45 +306,62 @@
                                     //draggable: false,
                                     //disableDefaultUI: true
                                     });
-                            
-                                 navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
-                            
+                                    flightPath = new google.maps.Polyline({
+                                        //path: routelineCoordinates,
+                                        geodesic: true,
+                                        strokeColor: '#FF0000',
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 2
+                                    });
+
+                                    
+                                    flightPath.setMap(map);
+                                var infoWindow = new google.maps.InfoWindow({map: map});
+                                
+                                    if(navigator.geolocation && running == 1){
+                                        watch = navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
+                                    }
+                                
                             //runs every second and updates path and dom
                             function positionUpdate(position) {
-                                map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
-route = route.latlng
                                 if (running == 1){
-                                    Run.lat = position.coords.latitude;
-                                    Run.lng = position.coords.longitude; 
+                                    map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
+                                    coordinates.lat = position.coords.latitude;
+                                    coordinates.lng = position.coords.longitude;
+
                                     currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
                                     
-                                    route.push(Run)
-                                    
-                                var routePolyline = new google.maps.Polyline({
-                                    path: route.paths,
-    			                    map: map,
-                                    strokeColor: '#FF0000',
-                                    strokeOpacity: 1.0,
-                                    strokeWeight: 2
-                                    });
-                                  
+                                    routelineCoordinates.push(coordinates);
+                                
+
+                                    console.log(JSON.stringify(routelineCoordinates))
+                                    addLatLng(position);
                                 }
 
                                 else if (running == 0){
                                     // storing current position as the initial value of path so that the polyline will have an initial value on record.
-              	                 Run.lat = position.coords.latitude;
-                                    Run.lng = position.coords.longitude; 
+                                    //Run.lat = position.coords.latitude;
+                                    //Run.lng = position.coords.longitude; 
                                     
                                     
-                                    route.paths[0]=Run;
+                                    //route.paths[0]=Run;
                                 }
 
-                                positionMarker.setPosition({lat: currentPos.coords.latitude, lng: currentPos.coords.longitude});
+                               
                                 }
-                            
                             }
                             
-
+                            function addLatLng(position){
+                                    var path = flightPath.getPath();
+                                    path.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                            
+                                    var marker = new google.maps.Marker({
+                                        position: currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)),
+                                        title: '#' + path.getLength(),
+                                        map: map
+                                    });
+                        
+                            }
                       
                         </script>
                         
@@ -337,7 +373,7 @@ route = route.latlng
                 </div>
                 
                 <center>
-                <div>   
+                <div>
                     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:2%;margin-left:2%;" id="recordTable">
                         <thead>
                             <tr>
