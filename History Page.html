@@ -11,6 +11,17 @@
                 <img src='sonic4.jpeg' style='width:100%;height:100%' alt='[]' />
         </div>
         
+        <script>
+        var itemsRaw = [],itemsParse = [];
+        var n = localStorage.length;
+            for(var i = 0;i<n;i++){
+                var key = localStorage.key(i);
+                itemsRaw(i) = localStorage.getItem(key);
+                itemsParse(i) = JSON.parse(itemRaw(i));
+            }
+            var itemtest = itemsParse(1);
+            Document.getElementById(hello1).innerHTML = itemtest;
+        </script>
         
         <script>
         function generate_table() {
