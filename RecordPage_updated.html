@@ -47,14 +47,15 @@
         <script>
         
             var Run = {
-                lat: 0 ,
+                lat: 0,
                 lng: 0,
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
                 description: "" ,
-                extraComments: ""
+                extraComments: "",
+                mode: ""
             };
             <!-- Timer Function -->
             var time = 0;
@@ -72,6 +73,15 @@
                 if(running == 0 && select == 1){
                     running = 1;
                     increment();
+                 
+                    navigator.geolocation.getCurrentPosition(function(position){
+                    currentMarker= new google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Current Point'    
+                    });
+                   });
+                    
                     document.getElementById("play").innerHTML = "pause_circle_outline";
                     document.getElementById("recordStatus").innerHTML = "Recording!";
                         }
@@ -84,7 +94,6 @@
                 }
             }
 
-            
             function reset(){
                 if(running == 0 && time > 0){
                     running = 0;
@@ -131,6 +140,7 @@
             var i = 0;
             function finish(){
                 if(running == 0 && time > 0){
+                    
                     var description = prompt("Enter a description of your run:", "Enter Description...");   
                     Run.description = description; 
                     
@@ -143,6 +153,13 @@
                     Run.minutes = mins;
                     Run.seconds = secs;
                     Run.tenths = tenths;
+                    
+                    if(modeCycle == 1)
+                    Run.mode = "Cycling"; 
+                    else if (modeRun ==1)
+                        Run.mode = "Running";
+                    else if (modeWalk == 1)
+                        Run.mode = "Walking";
                     
                     var dataString = JSON.stringify(Run);
                     localStorage.setItem("runSummary"+i,dataString)
@@ -241,35 +258,59 @@
                         <div id="map"></div>
                         <script type="text/javascript">
 
+                         
+                            var route = {
+                                title: "",
+                                paths:[]
+                            };
+                            
+                            
                             var map;
                             function initMap() {
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
                                     zoom: 17
-                                });
-                           
-                                    // Try HTML5 geolocation.
-                                if (navigator.geolocation) {
-                                    navigator.geolocation.getCurrentPosition(function(position) {
-                                        var pos = {
-                                            lat: position.coords.latitude,
-                                            lng: position.coords.longitude
-                                        };
-                                            var marker = new google.maps.Marker({
-                                position: pos,
-                                map: map,
-                                title: 'Start Location'
-                                });
-                                
-                                        var marker = new google.maps.Marker({
-                                position: pos,
-                                map: map,
-                                title: 'Start Location'
-                                });
-                                        map.setCenter(pos);
-                                        }
-                                    )
+                                    //mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                    //scrollwheel: false,
+                                    //draggable: false,
+                                    //disableDefaultUI: true
+                                    });
+                            
+                                 navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
+                            
+                            //runs every second and updates path and dom
+                            function positionUpdate(position) {
+                                map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
+route = route.latlng
+                                if (running == 1){
+                                    Run.lat = position.coords.latitude;
+                                    Run.lng = position.coords.longitude; 
+                                    currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
+                                    
+                                    route.push(Run)
+                                    
+                                var routePolyline = new google.maps.Polyline({
+                                    path: route.paths,
+    			                    map: map,
+                                    strokeColor: '#FF0000',
+                                    strokeOpacity: 1.0,
+                                    strokeWeight: 2
+                                    });
+                                  
                                 }
+
+                                else if (running == 0){
+                                    // storing current position as the initial value of path so that the polyline will have an initial value on record.
+              	                 Run.lat = position.coords.latitude;
+                                    Run.lng = position.coords.longitude; 
+                                    
+                                    
+                                    route.paths[0]=Run;
+                                }
+
+                                positionMarker.setPosition({lat: currentPos.coords.latitude, lng: currentPos.coords.longitude});
+                                }
+                            
                             }
                             
 
