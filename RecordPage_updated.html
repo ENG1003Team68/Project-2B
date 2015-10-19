@@ -165,6 +165,18 @@
                     localStorage.setItem("runSummary"+i,dataString)
                     i = i+1;
                     
+                    //Erases all info and starts again
+                    running = 0;
+                    time = 0;
+                    select = 0;
+                    modeWalk = 0;
+                    modeRun = 0;
+                    modeCycle = 0;
+                    document.getElementById("output").innerHTML = "00:00:00:0";
+                    document.getElementById("modeOutput").innerHTML = "Select an Activity";
+                    document.getElementById("recordStatus").innerHTML = "Not Recording";
+                    alert("Run has been saved!");
+                    
                 }
                 else if(running == 0 || time == 0){
                     var error = alert("Record a run first by pressing the start button!");
