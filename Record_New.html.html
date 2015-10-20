@@ -1,0 +1,396 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <style>
+            body {
+                background-image: url("nadal.jpg");
+            }
+            #recordTable th, #statusTable th, #modeTable th{
+                background-color: aquamarine;
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 25px;
+                text-align:center;
+            }
+            #recordTable td {
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 35px;
+                text-align:center;
+            }
+            #statusTable td, #modeTable td{
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 30px;  
+                text-align:center;
+            }
+            #recordTable tr {
+                align-content: center;
+            }
+            #recordTable{
+                display: inline-block;
+            }
+            #statusTable, #modeTable{
+                display: inline-block;            
+            }
+            #functions{
+                margin-bottom: 10%;
+                margin-top: 4%;
+            }
+            #map{
+                height: 5000px;
+                width: 75%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 2%;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        
+        <script>
+            // Declaring Global Variables
+            // Creating an object where all data for the 'run' is stored.
+            var Run = {
+                description: "" ,
+                extraComments: "",
+                mode: "",
+                hours: 0, 
+                minutes: 0,
+                seconds: 0,
+                tenths: 0,
+                route: []
+            };
+
+            var coordinates = {
+                    lat: 0,
+                    lng: 0
+                };
+            
+            var time = 0;
+            var running = 0;
+            var select = 0;
+            var modeWalk = 0, modeRun = 0, modeCycle = 0;
+            var currentMarker, startMarker;
+
+            
+            function positionUpdate(position){
+                if (running == 1){
+                   
+                    var tempCoord = {
+                    lat: 0,
+                    lng: 0
+                    };
+                    
+                    tempCoord.lat = position.coords.latitude;
+                    tempCoord.lng = position.coords.longitude;
+                    
+                    currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
+                    
+                    console.log(JSON.stringify(Run.route));
+                    
+                    Run.route.push(tempCoord);
+                    
+                   /* var result = "";
+                                    //Testing code for Chrome Inspect (Delete line 355 before submitting)
+                    for(var i=0; i < Run.route.length; i++){
+                        result+= Run.route[i].lat + " " + Run.route[i].lng;
+                    }
+                    console.log(result);
+                    */
+                    console.log(JSON.stringify(Run.route));
+                     
+                    //addLatLng(coordinates);
+                }               
+            }
+            
+            function addLatLng(position){
+                var path = runPath.getPath();
+                path.push(new google.maps.LatLng(position.lat, position.lng));
+                            
+                var marker = new google.maps.Marker({
+                        position: currentMarker.setPosition(new google.maps.LatLng(position.lat, position.lng)),
+                        title: '#' + path.getLength(),
+                        map: map
+                });
+                        
+            }
+            
+            function startPause(){
+                if(modeWalk == 0 && modeCycle == 0 && modeRun == 0){
+                    alert("Select an Activity first!");
+                }
+                    else{
+                    select = 1; 
+                    }
+                if(running == 0 && select == 1){
+                    running = 1;
+                    increment();
+                    document.getElementById("play").innerHTML = "pause_circle_outline";
+                    document.getElementById("recordStatus").innerHTML = "Recording!";
+                
+                    runPath = new google.maps.Polyline({
+                        
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2
+                    });
+                    
+                    navigator.geolocation.getCurrentPosition(function(position){
+                    startMarker= new google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Start Point'    
+                    });}
+                    ,undefined,{maximumAge: Infinity});
+                    
+                    navigator.geolocation.watchPosition(positionUpdate);
+                    runPath.setMap(map);
+                }
+                    else{
+                        running = 0;
+                        document.getElementById("play").innerHTML = "play_circle_outline";
+                    }
+                if(running == 0 && time > 0){
+                document.getElementById("recordStatus").innerHTML = "Paused";
+                }
+            }
+
+            
+            function reset(){
+                if(running == 0 && time > 0){
+                    running = 0;
+                    time = 0;
+                    select = 0;
+                    modeWalk = 0;
+                    modeRun = 0;
+                    modeCycle = 0;
+                    document.getElementById("output").innerHTML = "00:00:00:0";
+                    document.getElementById("modeOutput").innerHTML = "Select an Activity";
+                    document.getElementById("recordStatus").innerHTML = "Not Recording";
+                    alert("Run has been deleted!");
+                }
+                else if(time == 0){
+                    var error = alert("Record a run first by pressing the start button!");
+                }
+            }
+            
+            function increment(){
+                if(running == 1){
+                setTimeout(function(){
+                    time++;
+                    
+                    var hours = Math.floor(time/10/60/60);
+                    var mins = Math.floor((time/10/60) % 60);
+                    var secs = Math.floor(time/10 % 60);
+                    var tenths = time % 10;
+                    
+                    if(hours < 10){
+                        hours = "0" + hours;
+                    }
+                    if(mins < 10){
+                        mins = "0" + mins;
+                    }
+                    if(secs < 10){
+                        secs = "0" + secs;
+                    }
+                    document.getElementById("output").innerHTML = hours + ":" + mins + ":" + secs + ":" + tenths;
+                    increment();  
+                }, 100);
+                } 
+            }
+            
+            
+            function finish(){
+                if(running == 0 && time > 0){
+                    var description = prompt("Enter a description of your run:", "Enter Description...");   
+                }
+                else if(running == 0 || time == 0){
+                    var error = alert("Record a run first by pressing the start button!");
+                }
+            
+            }
+            
+            function run(){
+                
+                if(running == 0 && time == 0){
+                    modeRun = 1;
+                    if(modeCycle == 1 || modeWalk == 1){
+                        modeCycle = 0;
+                        modeWalk = 0;
+                    }
+                    var mode = document.getElementById("modeOutput");
+                    mode.innerHTML = "Running";
+                }
+                else{
+                }
+            }
+                
+            function cycle(){
+                
+                if(running == 0 && time == 0){
+                    modeCycle = 1;
+                    if(modeRun == 1 || modeWalk == 1){
+                        modeRun = 0;
+                        modeWalk = 0;
+                    }
+                    var mode = document.getElementById("modeOutput");
+                    mode.innerHTML = "Cycling";
+                }
+                else{
+                }
+            }
+            
+            function walk(){
+                
+                if(running == 0 && time == 0){
+                    modeWalk = 1;
+                    if(modeCycle == 1 || modeRun == 1){
+                        modeCycle = 0;
+                        modeRun = 0;
+                    }
+                    var mode = document.getElementById("modeOutput");
+                    mode.innerHTML = "Walking";
+                }
+                else{
+                }
+            }
+            </script>
+        
+<!-- Uses a header that scrolls with the text, rather than staying
+  locked at the top -->
+            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                <header class="mdl-layout__header mdl-layout__header--scroll">
+                    <div class="mdl-layout__header-row">
+      <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='index_updated.html';">
+       <i class="material-icons">arrow_back</i>
+      </button> 
+                        <!-- Title -->
+                        <span class="mdl-layout-title" style="margin-left:2%">Record Page (we can change the title later)</span>
+                        <!-- Add spacer, to align navigation to the right -->
+                        <div class="mdl-layout-spacer"></div>
+                        <!-- Colored FAB button with ripple -->
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="run()">
+                            <i class="material-icons">directions_run</i>
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="cycle()">
+                            <i class="material-icons">directions_bike</i>
+                        </button>
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="walk()">
+                            <i class="material-icons">directions_walk</i>
+                        </button>
+                    </div>
+                </header>
+                <main class="mdl-layout__content">
+                    <div class="page-content"><!-- Your content goes here --></div>
+                </main>
+                    
+                <div id="map"></div>    
+                <script src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+                    <script>
+
+                        var mapOptions = { //Options are created to stop user from fiddling with the map
+                            zoom: 20,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP,
+                            scrollwheel: false,
+                            draggable: false,
+                            disableDefaultUI: true,
+                            disableDoubleClickZoom: true
+                        };
+
+                        var map = new google.maps.Map(document.getElementById('map'), mapOptions); //creating the map on the screen
+    
+                        navigator.geolocation.watchPosition(function(position){
+    
+                            var geolocate = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                            map.panTo(geolocate); //panning the map to the current position
+            
+    
+                            if (typeof currentMarker === 'undefined'){
+                                currentMarker = new google.maps.Marker({
+                                    position: {
+                                        lat: position.coords.latitude,
+                                        lng: position.coords.longitude
+                                    },
+                                    map: map,
+                                    title: 'Current Point',
+                                });
+                            }else {
+                                currentMarker.setPosition({
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                });
+                            }});
+    
+                </script>
+                
+                <center>
+                <div>   
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:2%;margin-left:2%;" id="recordTable">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric" id="output">00:00:00:0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    
+                <div>
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:4%" id="statusTable">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td id="recordStatus">Not Recording</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%" id="modeTable">
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td id="modeOutput">Select an activity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </div>
+                </center>
+                    
+                <center id="functions">   
+                    <!-- Colored FAB button with ripple -->
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="startPause()">
+                        <i class="material-icons" id="play">play_circle_outline</i>
+                    </button>
+                    <!-- Colored FAB button with ripple -->
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="finish()">
+                        <i class="material-icons">done</i>
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="reset()">
+                        <i class="material-icons" id="delete">delete</i>
+                    </button>
+                </center>   
+    
+    
+        </div>
+    </body>
+
+</html>

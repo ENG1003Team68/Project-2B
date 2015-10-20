@@ -58,7 +58,6 @@
                 route: []
             };
 
-            var routelineCoordinates = [];
             var coordinates = {
                     lat: 0,
                     lng: 0
@@ -82,12 +81,11 @@
                     running = 2;
                     increment();
                     
-                    navigator.geolocation.getCurrentPosition(function(position){
-                    currentMarker= google.maps.Marker({
+                    navigator.geolocation.watchPosition(function(position){
                             position:{lat: position.coords.latitude, lng: position.coords.longitude},
                             map: map,
                             title: 'Current Point'    
-                    });
+                    }); 
                     });
                     document.getElementById("play").innerHTML = "pause_circle_outline";
                     document.getElementById("recordStatus").innerHTML = "Recording!";
@@ -98,17 +96,19 @@
                     increment();
                  
                     navigator.geolocation.getCurrentPosition(function(position){
-                    currentMarker= new google.maps.Marker({
-                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
-                            map: map,
-                            title: 'Current Point'    
-                    });
-                     startMarker= new google.maps.Marker({
+                    startMarker= new google.maps.Marker({
                             position:{lat: position.coords.latitude, lng: position.coords.longitude},
                             map: map,
                             title: 'Start Point'    
-                    });    
                     });
+                    });
+                     navigator.geolocation.watchPosition(function(position){                   
+                     currentMarker= new google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Current Point'    
+                    });    
+                     });
                     
                     var intervalID = setInterval(initMap(), 100)
                     
@@ -135,7 +135,6 @@
                     modeWalk = 0;
                     modeRun = 0;
                     modeCycle = 0;
-                    routelineCoordinates = [];
                     Run.route = [];
                     coordinates = { lat: 0, lng: 0 };
                     
@@ -211,6 +210,7 @@
                     modeRun = 0;
                     modeCycle = 0;
                     Run.route = [];
+                    
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
                     document.getElementById("recordStatus").innerHTML = "Not Recording";
@@ -333,17 +333,30 @@
                             //runs every second and updates path and dom
                             function positionUpdate(position) {
                                 if (running == 1 || running == 2){
-                                    map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
-                                    coordinates.lat = position.coords.latitude;
-                                    coordinates.lng = position.coords.longitude;
-
-                                    currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
-                                    
-                                    Run.route.push(coordinates);
-                                
+                    var tempCoord = {
+                    lat: 0,
+                    lng: 0
+                    };
+                    
+                    tempCoord.lat = position.coords.latitude;
+                    tempCoord.lng = position.coords.longitude;
+                    
+                    currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
+                    
+                    console.log(JSON.stringify(Run.route));
+                    
+                    Run.route.push(tempCoord);
+                    
+                   /* var result = "";
                                     //Testing code for Chrome Inspect (Delete line 355 before submitting)
-                                    console.log(JSON.stringify(Run.route))
-                                    addLatLng(position);
+                    for(var i=0; i < Run.route.length; i++){
+                        result+= Run.route[i].lat + " " + Run.route[i].lng;
+                    }
+                    console.log(result);
+                    */
+                    console.log(JSON.stringify(Run.route));
+                     
+                    //addLatLng(coordinates);
                                 }
 
                                 else if (running == 0){
