@@ -1,6 +1,7 @@
 <html>
 
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -11,16 +12,27 @@
         
         <style>
            
-            .page-content{
-                width:  50%;
+            .page-content1{
+                width:  80%;
                 height: 65%;
                 float:  left;
                 padding:    20px;
                 background-color: aliceblue;
                 margin-top:     5%;
-                margin-left:    20%;
+                margin-left:  2%;
                 opacity: 0.85;
                 filter: alpha(opacity=60);               
+            }
+            .page-content{
+                width:  80%;
+                height: 650px;
+                float:  left;
+                padding:    20px;
+                background-color: aliceblue;
+                margin-top:     5%;
+                margin-left:  2%;
+                opacity: 0.85;
+                filter: alpha(opacity=60);             
             }
         </style>
     </head>
@@ -46,7 +58,7 @@
             </header>
             <main class="mdl-layout__content">
                 <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-                    <div class="page-content">
+                    <div class="page-content1">
                         <h3>How does it work??</h3>
                             <p>
                                 Welcome to our 'Do It!' fitness app!
@@ -54,7 +66,7 @@
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="scroll-tab-2">
-                    <div class="page-content">
+                    <div class="page-content" id = "big">
                         <h3>I want to get started!</h3>
                             <p>
                                 To get started, press the 'Record' button on the home screen.
@@ -66,13 +78,14 @@
                                 <br><br>
                                 Once you have selected an activity, you are ready to go! Press the play button to start recording!
                                 <br><br>
-                        <h4>Finishing a run</h4>
-                                When you are finished with your run, they can be saved to keep track of your progress or deleted if you wish to discard the recording.
                             </p>
+                        <h4>Finishing a run</h4>
+                                <p>When you are finished with your run, they can be saved to keep track of your progress or deleted if you wish to discard the recording.</p>
+                            
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="scroll-tab-3">
-                    <div class="page-content">
+                    <div class="page-content1">
                         <h3>Viewing past 'runs'</h3>
                             <p>
                                 You can view all your previous 'runs' that you have completed in the past in the 'History' section.
