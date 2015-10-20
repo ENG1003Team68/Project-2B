@@ -48,25 +48,14 @@
             // Declaring Global Variables
             // Creating an object where all data for the 'run' is stored.
             var Run = {
-<<<<<<< HEAD
-                lat: 0,
-                lng: 0,
-=======
                 description: "" ,
                 extraComments: "",
                 mode: "",
->>>>>>> origin/Alex2
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
-<<<<<<< HEAD
-                description: "" ,
-                extraComments: "",
-                mode: ""
-=======
                 route: []
->>>>>>> origin/Alex2
             };
 
             var routelineCoordinates = [];
@@ -114,9 +103,6 @@
                             map: map,
                             title: 'Current Point'    
                     });
-<<<<<<< HEAD
-                   });
-=======
                      startMarker= new google.maps.Marker({
                             position:{lat: position.coords.latitude, lng: position.coords.longitude},
                             map: map,
@@ -125,7 +111,6 @@
                     });
                     
                     var intervalID = setInterval(initMap(), 100)
->>>>>>> origin/Alex2
                     
                     document.getElementById("play").innerHTML = "pause_circle_outline";
                     document.getElementById("recordStatus").innerHTML = "Recording!";
@@ -140,10 +125,7 @@
                 document.getElementById("recordStatus").innerHTML = "Paused";
                 }
             }
-<<<<<<< HEAD
-=======
             
->>>>>>> origin/Alex2
 
             function reset(){
                 if(running == 0 && time > 0){
@@ -156,6 +138,7 @@
                     routelineCoordinates = [];
                     Run.route = [];
                     coordinates = { lat: 0, lng: 0 };
+                    runPath.setMap(null);
                     
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
@@ -202,8 +185,6 @@
                     var ExtraComments = prompt("Enter Extra Comments:", "Extra Comments...");   
                     
                     Run.extraComments = ExtraComments;
-                    //Run.lat = lat;
-                    //Run.lng = lng;
                     Run.hours = hours;
                     Run.minutes = mins;
                     Run.seconds = secs;
@@ -219,7 +200,7 @@
                     var dataString = JSON.stringify(Run);
                     
                     localStorage.setItem("runSummary"+i,dataString)
-                    
+                    i++
                     
                     //Erases all info and starts again
                     running = 0;
@@ -228,7 +209,11 @@
                     modeWalk = 0;
                     modeRun = 0;
                     modeCycle = 0;
+                    routelineCoordinates = [];
                     Run.route = [];
+                    coordinates = { lat: 0, lng: 0 };
+                    runPath.setMap(null);
+                    
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
                     document.getElementById("recordStatus").innerHTML = "Not Recording";
@@ -326,56 +311,15 @@
                     <body>
                         <div id="map"></div>
                         <script type="text/javascript">
-<<<<<<< HEAD
-
-                         
-                            var route = {
-                                title: "",
-                                paths:[]
-                            };
                             
+                            var map, runPath;
                             
-                            var map;
-=======
-                            
-                            var map, flightPath;
-                            
->>>>>>> origin/Alex2
                             function initMap() {
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
                                     zoom: 17
-<<<<<<< HEAD
-                                    //mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                    //scrollwheel: false,
-                                    //draggable: false,
-                                    //disableDefaultUI: true
                                     });
-                            
-                                 navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
-                            
-                            //runs every second and updates path and dom
-                            function positionUpdate(position) {
-                                map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
-route = route.latlng
-                                if (running == 1){
-                                    Run.lat = position.coords.latitude;
-                                    Run.lng = position.coords.longitude; 
-                                    currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
-                                    
-                                    route.push(Run)
-                                    
-                                var routePolyline = new google.maps.Polyline({
-                                    path: route.paths,
-    			                    map: map,
-                                    strokeColor: '#FF0000',
-                                    strokeOpacity: 1.0,
-                                    strokeWeight: 2
-                                    });
-                                  
-=======
-                                    });
-                                    flightPath = new google.maps.Polyline({
+                                    runPath = new google.maps.Polyline({
                                         geodesic: true,
                                         strokeColor: '#FF0000',
                                         strokeOpacity: 1.0,
@@ -383,7 +327,7 @@ route = route.latlng
                                     });
 
                                     
-                                    flightPath.setMap(map);
+                                    runPath.setMap(map);
                                 
                                     if(navigator.geolocation && running == 1 || running == 2){
                                         watch = navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
@@ -393,43 +337,33 @@ route = route.latlng
                             function positionUpdate(position) {
                                 if (running == 1 || running == 2){
                                     map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
-                                    coordinates.lat = position.coords.latitude;
-                                    coordinates.lng = position.coords.longitude;
-
+                                    var tempCoord = {
+                                        lat: 0,
+                                        lng: 0
+                                    };
+                    
+                                    tempCoord.lat = position.coords.latitude;
+                                    tempCoord.lng = position.coords.longitude;
+                    
                                     currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
                                     
-                                    Run.route.push(coordinates);
-                                
-                                    //Testing code for Chrome Inspect (Delete line 355 before submitting)
-                                    console.log(JSON.stringify(Run.route))
-                                    addLatLng(position);
->>>>>>> origin/Alex2
-                                }
+                                    //Testing code in the console
+                                    console.log(JSON.stringify(Run.route));
 
-                                else if (running == 0){
-                                    // storing current position as the initial value of path so that the polyline will have an initial value on record.
-<<<<<<< HEAD
-              	                 Run.lat = position.coords.latitude;
-                                    Run.lng = position.coords.longitude; 
+                                    Run.route.push(tempCoord);
                                     
+                                    //Testing code in the console
+                                    console.log(JSON.stringify(Run.route));
                                     
-                                    route.paths[0]=Run;
-=======
-                                    //Run.lat = position.coords.latitude;
-                                    //Run.lng = position.coords.longitude; 
+                                    addLatLng(position);
 
                                 }
                                
->>>>>>> origin/Alex2
-                                }
-
-                                positionMarker.setPosition({lat: currentPos.coords.latitude, lng: currentPos.coords.longitude});
-                                }
-                            
+                            }
                             }
                             
                             function addLatLng(position){
-                                    var path = flightPath.getPath();
+                                    var path = runPath.getPath();
                                     path.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
                             
                                     var marker = new google.maps.Marker({
