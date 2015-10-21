@@ -51,11 +51,14 @@
                 description: "" ,
                 extraComments: "",
                 mode: "",
+                distTravelledkm: 0,
+                speedAvg: 0,
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
-                route: []
+                secsTotal: 0,
+                route: [] 
             };
 
             var coordinates = {
@@ -137,6 +140,9 @@
                     modeCycle = 0;
                     Run.route = [];
                     coordinates = { lat: 0, lng: 0 };
+                    Run.distTravelledkm = 0;
+                    Run.speedAvg = 0;
+                    runPath.setMap(null);
                     
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
@@ -183,15 +189,14 @@
                     var ExtraComments = prompt("Enter Extra Comments:", "Extra Comments...");   
                     
                     Run.extraComments = ExtraComments;
-                    //Run.lat = lat;
-                    //Run.lng = lng;
                     Run.hours = hours;
                     Run.minutes = mins;
                     Run.seconds = secs;
                     Run.tenths = tenths;
+                    getDistanceFromLatLngInKm();
                     
                     if(modeCycle == 1)
-                    Run.mode = "Cycling"; 
+                        Run.mode = "Cycling"; 
                     else if (modeRun ==1)
                         Run.mode = "Running";
                     else if (modeWalk == 1)
@@ -200,7 +205,7 @@
                     var dataString = JSON.stringify(Run);
                     
                     localStorage.setItem("runSummary"+i,dataString)
-                    
+                    i++
                     
                     //Erases all info and starts again
                     running = 0;
@@ -210,6 +215,13 @@
                     modeRun = 0;
                     modeCycle = 0;
                     Run.route = [];
+<<<<<<< HEAD
+=======
+                    coordinates = { lat: 0, lng: 0 };
+                    Run.distTravelledkm = 0;
+                    Run.speedAvg = 0;
+                    runPath.setMap(null);
+>>>>>>> origin/Alex2
                     
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
@@ -267,6 +279,51 @@
                 else{
                 }
             }
+            
+            function getDistanceFromLatLngInKm(){
+                var R = 6371; // Radius of the earth in km
+                var distTotal = 0;
+                
+                for(var i = 0; i < Run.route.length - 1; i++){
+                    var lat1 = Run.route[i].lat;
+                    var lng1 = Run.route[i].lng;
+                    
+                    //console.log(JSON.stringify(lat1));
+                    //console.log(JSON.stringify(lng1)); 
+                    
+                    var lat2 = Run.route[i+1].lat;
+                    var lng2 = Run.route[i+1].lng;
+                
+                    //console.log(JSON.stringify(lat2));
+                    //console.log(JSON.stringify(lng2)); 
+                    
+                    var distLat = deg2rad(lat2-lat1);  // deg2rad below
+                    var distLng = deg2rad(lng2-lng1);     
+                    
+                    var a = 
+                    Math.sin(distLat/2) * Math.sin(distLat/2) +
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                    Math.sin(distLng/2) * Math.sin(distLng/2);
+                    
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                    distTotal += R * c; // Distance in km
+                    //console.log("Dist: " + JSON.stringify(distTotal));
+                }
+                    Run.distTravelledkm = distTotal;
+                    averageSpeed(Run.distTravelledkm);
+            }
+
+            function deg2rad(deg) {
+                return deg * (Math.PI/180)
+            }
+            
+            function averageSpeed(distance){
+                Run.secsTotal = (Run.hours) + (Run.minutes/60) + (Run.seconds/3600) + (Run.tenths/36000);
+                console.log(JSON.stringify(Run.secsTotal));
+                var speed = distance/Run.secsTotal; //Calculates average speed in km/h
+                Run.speedAvg = speed;
+            }
+            
             </script>
         
 <!-- Uses a header that scrolls with the text, rather than staying
@@ -309,14 +366,14 @@
                         <div id="map"></div>
                         <script type="text/javascript">
                             
-                            var map, flightPath;
+                            var map, runPath;
                             
                             function initMap() {
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
                                     zoom: 17
                                     });
-                                    flightPath = new google.maps.Polyline({
+                                    runPath = new google.maps.Polyline({
                                         geodesic: true,
                                         strokeColor: '#FF0000',
                                         strokeOpacity: 1.0,
@@ -324,7 +381,7 @@
                                     });
 
                                     
-                                    flightPath.setMap(map);
+                                    runPath.setMap(map);
                                 
                                     if(navigator.geolocation && running == 1 || running == 2){
                                         watch = navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
@@ -333,6 +390,7 @@
                             //runs every second and updates path and dom
                             function positionUpdate(position) {
                                 if (running == 1 || running == 2){
+<<<<<<< HEAD
                     var tempCoord = {
                     lat: 0,
                     lng: 0
@@ -358,19 +416,36 @@
                      
                     //addLatLng(coordinates);
                                 }
+=======
+                                    map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
+                                    var tempCoord = {
+                                        lat: 0,
+                                        lng: 0
+                                    };
+                    
+                                    tempCoord.lat = position.coords.latitude;
+                                    tempCoord.lng = position.coords.longitude;
+                    
+                                    currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
+                                    
+                                    //Testing code in the console
+                                    console.log(JSON.stringify(Run.route));
+>>>>>>> origin/Alex2
 
-                                else if (running == 0){
-                                    // storing current position as the initial value of path so that the polyline will have an initial value on record.
-                                    //Run.lat = position.coords.latitude;
-                                    //Run.lng = position.coords.longitude; 
+                                    Run.route.push(tempCoord);
+                                    
+                                    //Testing code in the console
+                                    console.log(JSON.stringify(Run.route));
+                                    
+                                    addLatLng(position);
 
                                 }
                                
-                                }
+                            }
                             }
                             
                             function addLatLng(position){
-                                    var path = flightPath.getPath();
+                                    var path = runPath.getPath();
                                     path.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
                             
                                     var marker = new google.maps.Marker({
