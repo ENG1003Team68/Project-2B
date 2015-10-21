@@ -51,6 +51,7 @@
                 description: "" ,
                 extraComments: "",
                 mode: "",
+                date: 0,
                 distTravelledkm: 0,
                 speedAvg: 0,
                 hours: 0, 
@@ -193,6 +194,7 @@
                     Run.seconds = secs;
                     Run.tenths = tenths;
                     getDistanceFromLatLngInKm();
+                    getDate();
                     
                     if(modeCycle == 1)
                         Run.mode = "Cycling"; 
@@ -274,6 +276,24 @@
                 }
                 else{
                 }
+            }
+            
+            function getDate(){
+                var today = new Date();
+                var day = today.getDate();
+                var month = today.getMonth()+1; //January is 0!
+                var year = today.getFullYear();
+
+                if(day < 10) {
+                    day ='0'+ day;
+                } 
+
+                if(month < 10) {
+                    month ='0'+ month
+                } 
+
+                today = day+'/'+month+'/'+year;
+                Run.date = today;
             }
             
             function getDistanceFromLatLngInKm(){
