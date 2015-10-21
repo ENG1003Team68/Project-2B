@@ -63,11 +63,6 @@
                 calories: 0
             };
 
-            var coordinates = {
-                    lat: 0,
-                    lng: 0
-                };
-            
             var time = 0;
             var running = 0;
             var select = 0;
@@ -427,12 +422,12 @@
                                     currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
                                     
                                     //Testing code in the console
-                                    console.log(JSON.stringify(Run.route));
+                                    //console.log(JSON.stringify(Run.route));
 
                                     Run.route.push(tempCoord);
                                     
                                     //Testing code in the console
-                                    console.log(JSON.stringify(Run.route));
+                                    //console.log(JSON.stringify(Run.route));
                                     
                                     addLatLng(position);
 
