@@ -21,7 +21,7 @@
                 font-size: 35px;
                 text-align:center;
             }
-            #statusTable td, #modeTable td{
+            #statusTable td, #modeTable td{ 
                 font-family: "Trebuchet MS", Helvetica, sans-serif;
                 font-size: 30px;  
                 text-align:center;
@@ -51,15 +51,15 @@
                 description: "" ,
                 extraComments: "",
                 mode: "",
+                date: 0,
                 distTravelledkm: 0,
                 speedAvg: 0,
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
-                secsTotal: 0,
                 route: [],
-                date: 0
+                date: 0,
             };
 
             var coordinates = {
@@ -175,7 +175,7 @@
                     }
                     document.getElementById("output").innerHTML = hours + ":" + mins + ":" + secs + ":" + tenths;
                     increment();  
-                }, 100);
+                }, 1);
                 } 
             }
             
@@ -194,6 +194,7 @@
                     Run.seconds = secs;
                     Run.tenths = tenths;
                     getDistanceFromLatLngInKm();
+                    getDate();
                     
                     if(modeCycle == 1)
                         Run.mode = "Cycling"; 
@@ -277,6 +278,24 @@
                 }
             }
             
+            function getDate(){
+                var today = new Date();
+                var day = today.getDate();
+                var month = today.getMonth()+1; //January is 0!
+                var year = today.getFullYear();
+
+                if(day < 10) {
+                    day ='0'+ day;
+                } 
+
+                if(month < 10) {
+                    month ='0'+ month
+                } 
+
+                today = day+'/'+month+'/'+year;
+                Run.date = today;
+            }
+            
             function getDistanceFromLatLngInKm(){
                 var R = 6371; // Radius of the earth in km
                 var distTotal = 0;
@@ -307,7 +326,8 @@
                     //console.log("Dist: " + JSON.stringify(distTotal));
                 }
                     Run.distTravelledkm = distTotal;
-                    averageSpeed(Run.distTravelledkm);
+                    //averageSpeed(Run.distTravelledkm);
+                Run.speedAvg = (Run.distTravelledkm)/(time/36000);
             }
 
             function deg2rad(deg) {
