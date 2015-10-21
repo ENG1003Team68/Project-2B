@@ -1,14 +1,16 @@
 <html>
     <head>
+        <!-- Code to allow use of MDL -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         
+        <!-- Creating an object and placing the background in it (helps spread the background evenly) -->
         <div style='position:absolute;z-index:0;left:0;top:0;width:150%;height:150%'>
                 <img src='sonic4.jpeg' style='width:100%;height:100%' alt='[]' />
         </div>
-        
+        <!-- Forming style for the title box -->
                 <style>
             .viewRun{
                 width: 200px;
@@ -28,7 +30,7 @@
 
         
     </head>
-        
+        <!-- Calls function create() when the page is loaded -->
     <body onload="Javascript:create()">
         
         
@@ -37,6 +39,7 @@
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             <header class="mdl-layout__header mdl-layout__header--scroll">
                 <div class="mdl-layout__header-row">
+                    <!-- Creating an arrow to the index page -->
                     <button class="mdl-button mdl-js-button mdl-button--icon" onclick="location.href='index_updated.html';">
                         <i class="material-icons">arrow_back</i>
                     </button>
@@ -67,7 +70,7 @@
         
         
                     
-
+<!-- Creating HTML table (will become dynamic with JavaScript -->
           
             <div id="mydata">
             <b>Summary of Activities</b>
@@ -91,15 +94,17 @@
             </div>
 
           <script>
-        
+        //Making the HTML table dynamic with JavaScript, creats new row for every recording
+              
             function create(){
                           
                 var n = localStorage.length;
+                //loop that counts how many rows ( = runs) needed
                      for(var i = 0; i < n; i++){
                           addRow(i);
                      }
             }
-              
+            //main function that adds the rows:  
             function addRow(i) {
                 
                 var table = document.getElementById("myTableData");
@@ -116,8 +121,8 @@
                     row.insertCell(6).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).extraComments;
                     row.insertCell(7).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
             }
-
-            function deleteRow(obj) {
+//gives functionality to button inserted into the table which will allow the user to delete single rows
+              function deleteRow(obj) {
 
                 var index = obj.parentNode.parentNode.rowIndex;
                 var table = document.getElementById("myTableData");
@@ -130,7 +135,7 @@
                 localStorage.removeItem(localStorage.key(index))
 
             }
-
+//gives functionality to button inserted to the page. Code will clear all local storage (deletes all runs) and then to refreshes the page automaticly to present the user with the result
             function deletelocal(){
                 localStorage.clear();
                 location.reload();
