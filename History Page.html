@@ -5,65 +5,9 @@
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-        
-<<<<<<< HEAD
-        <div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
+                <div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
                 <img src='sonic4.jpeg' style='width:100%;height:100%' alt='[]' />
         </div>
-        
-<<<<<<< HEAD
-        <script>
-        var itemsRaw = [],itemsParse = [];
-        var n = localStorage.length;
-            for(var i = 0;i<n;i++){
-                var key = localStorage.key(i);
-                itemsRaw(i) = localStorage.getItem(key);
-                itemsParse(i) = JSON.parse(itemRaw(i));
-            }
-            var itemtest = itemsParse(1);
-            Document.getElementById(hello1).innerHTML = itemtest;
-        </script>
-        
-        <script>
-        function generate_table() {
-  // get the reference for the body
-  var body = document.getElementsByTagName("body")[0];
- 
-  // creates a <table> element and a <tbody> element
-  var tbl     = document.createElement("table");
-  var tblBody = document.createElement("tbody");
- 
-  // creating all cells
-  for (var i = 0; i < 2; i++) {
-    // creates a table row
-    var row = document.createElement("tr");
- 
-    for (var j = 0; j < 2; j++) {
-      // Create a <td> element and a text node, make the text
-      // node the contents of the <td>, and put the <td> at
-      // the end of the table row
-      var cell = document.createElement("td");
-      var cellText = document.createTextNode("cell in row "+i+", column "+j);
-      cell.appendChild(cellText);
-      row.appendChild(cell);
-    }
- 
-    // add the row to the end of the table body
-    tblBody.appendChild(row);
-  }
- 
-  // put the <tbody> in the <table>
-  tbl.appendChild(tblBody);
-  // appends <table> into <body>
-  body.appendChild(tbl);
-  // sets the border attribute of tbl to 2;
-  tbl.setAttribute("border", "2");
-}
-        </script>
-=======
->>>>>>> master
-=======
->>>>>>> master
         
         <style>
             .viewRun{
@@ -75,13 +19,10 @@
                 opacity: 0.9;
                 filter: alpha(opacity=60);
             }
-            textarea{
-                font-family:calibri;
-                vertical-align: middle;
-                border: 4px solid grey;
-                opacity: 0.9;
-                filter: alpha(opacity=60);
-            }
+            #myTableData{
+                margin-left: 2%;
+                margin-right: 40%;
+            }   
             
         </style>
 
@@ -117,116 +58,39 @@
         <br><br>          
         <br><br>
 
-<<<<<<< HEAD
-        <br><br>
-        <br><br>
-        <br><br>
-            
-            <p id = hello1> hello 1</p>
-            
-        </center>
-        
-        
-        <script>
-<<<<<<< HEAD
-        var itemsRaw = [],itemsParse = [];
-        var n = localStorage.length;
-            for(var i = 0;i<n;i++){
-                var key = localStorage.key(i);
-                itemsRaw(i) = localStorage.getItem(key);
-                itemsParse(i) = JSON.parse(itemRaw(i));
-            }
-            var itemtest = itemsParse(1);
-            Document.getElementById(hello1).innerHTML = itemtest;
-        </script>
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="deleteLocal()">
-                        <i class="material-icons" id="delete">delete</i>
-                    </button>
-        <script>
-        function deleteLocal(){
-            localStorage.clear();
-   
-=======
-        
-var flightsListElement = document.getElementById('flights-list');
-	var routes = [];
- 
-    // Handle the user tapping on rows in list by calling listRowTapped().
-    // jQuery Mobile magic.
-    $('#flights-list').delegate('li', 'tap', listRowTapped);
-	
-	// Make the request
-	var data = {
-		airline: "QF",
-		sourceAirport: "LAX",
-		callback: "routesResponse"
-	};	
-	jsonpRequest("https://eng1003.eng.monash.edu/OpenFlights/routes/", data);
- 	
-	function jsonpRequest(url, data)
-	{
-		// Build URL parameters from data object.
-		var params = "";
-		// For each key in data object...
-		for (var key in data)
-		{
-			if (data.hasOwnProperty(key))
-			{
-				if (params.length == 0)
-				{
-					// First parameter starts with '?'
-					params += "?";
-				}
-				else
-				{
-					// Subsequent parameter separated by '&'
-					params += "&";
-				}
-=======
 
                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect mdl-button--colored" style=";margin-right:3%"  onclick="deletelocal()">
                     Clear History
                 </button>
-            <script>
-                function deletelocal(){
-            localStorage.clear();
-                }
-            </script>
         
         </center>
         
         
                     
-                    
-        <!DOCTYPE html>
-<main class="mdl-layout__content" onload="Javascript:create()">
 
-<<<<<<< HEAD
-        <script>
->>>>>>> master
-=======
           
             <div id="mydata">
             <b>Summary of Activities</b>
-            <table id="myTableData"  border="1" cellpadding="2">
-                <tr>
-                    <td><b>Description</b></td>
-                    <td><b>Date</b></td>
-                    <td><b>Time</b></td>
-                    <td><b>Distance</b></td>
-                    <td><b>Avarage speed</b></td>
-                    <td><b>Mode</b></td>
-                    <td><b>Extra comments</b></td>
+            <table id="myTableData" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" border="1" cellpadding="2">
+                <thead>
+                <tr> 
+                    <th class="mdl-data-table__cell--non-numeric">Description</th>
+                    <th>Date</th>
+                    <th><b>Time</b></th>
+                    <th><b>Distance (km)</b></th>
+                    <th><b>Avarage speed (km/h)</b></th>
+                    <th><b>Activity</b></th>
+                    <th><b></b></th>
                 </tr>
->>>>>>> master
-
+                </thead>
+                
             </table>
             &nbsp;
 
             </div>
 
           <script>
-              
+        
             function create(){
                           
                 var n = localStorage.length;
@@ -242,14 +106,13 @@ var flightsListElement = document.getElementById('flights-list');
                 var rowCount = table.rows.length;
                 var row = table.insertRow(rowCount);
                     
-                    row.insertCell(0).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
-                    row.insertCell(1).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).description;
-                    row.insertCell(2).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).date;
-                    row.insertCell(3).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).hours + ":" + (JSON.parse(localStorage.getItem(localStorage.key(i)))).minutes + ":" + (JSON.parse(localStorage.getItem(localStorage.key(i)))).seconds;
-                    row.insertCell(4).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).distTravelledkm;
-                    row.insertCell(5).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).speedAvg;
-                    row.insertCell(6).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).mode;
-
+                    row.insertCell(0).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).description;
+                    row.insertCell(1).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).date;
+                    row.insertCell(2).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).hours + ":" + (JSON.parse(localStorage.getItem(localStorage.key(i)))).minutes + ":" + (JSON.parse(localStorage.getItem(localStorage.key(i)))).seconds;
+                    row.insertCell(3).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).distTravelledkm.toFixed(2);
+                    row.insertCell(4).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).speedAvg;
+                    row.insertCell(5).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).mode;
+                    row.insertCell(6).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
             }
 
             function deleteRow(obj) {
@@ -258,57 +121,6 @@ var flightsListElement = document.getElementById('flights-list');
                 var table = document.getElementById("myTableData");
                 table.deleteRow(index);
                                 
-<<<<<<< HEAD
-                                        var marker = new google.maps.Marker({
-                                position: pos,
-                                map: map,
-                                title: 'Start Location'
-                                });
-                                        map.setCenter(pos);
-                                        }
-                                    )
-                                }
-                            }
-                            
-                        </script>
-                        <script async defer
-                                src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=&amp;callback=initMap">
-                        </script>
-                    </body>
-                </div>
-            
-                <center>
-                    <div>   
-                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-bottom:2%;margin-right:2%;margin-left:2%;" id="runSummaryTable">
-                        <thead>
-                            <tr>
-                                <th class="mdl-data-table__cell--non-numeric">Time</th>
-                                <th class="mdl-data-table__cell--non-numeric">Distance</th>
-                                <th class="mdl-data-table__cell--non-numeric">Speed</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="mdl-data-table__cell--non-numeric" id=""></td>
-                                <td class="mdl-data-table__cell--non-numeric" id=""></td>
-                                <td class="mdl-data-table__cell--non-numeric" id=""></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </div>
-        
-                </center>
-        
-        
-        
-<<<<<<< HEAD
->>>>>>> master
-        }
-=======
->>>>>>> master
-        
-        
-=======
                 if (localStorage.length == 1){
                     localStorage.clear();
                 }
@@ -317,10 +129,11 @@ var flightsListElement = document.getElementById('flights-list');
 
             }
 
+            function deletelocal(){
+                localStorage.clear();
+            }
+             
           </script>
 
-        </main>
-     
->>>>>>> master
     </body> 
 </html>
