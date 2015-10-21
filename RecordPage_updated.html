@@ -347,7 +347,7 @@
                     //console.log("Dist: " + JSON.stringify(distTotal));
                 }
                     Run.distTravelledkm = distTotal;
-                    Run.speedAvg = (Run.distTravelledkm)/(time/36000);
+                    Run.speedAvg = Math.round((Run.distTravelledkm)/(time/36000), -2);
             }
             
             //This function converts the lat and lng in radians
