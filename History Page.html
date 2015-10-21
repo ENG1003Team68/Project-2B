@@ -111,7 +111,7 @@
                     row.insertCell(1).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).date;
                     row.insertCell(2).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).hours + ":" + (JSON.parse(localStorage.getItem(localStorage.key(i)))).minutes + ":" + (JSON.parse(localStorage.getItem(localStorage.key(i)))).seconds;
                     row.insertCell(3).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).distTravelledkm.toFixed(2);
-                    row.insertCell(4).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).speedAvg.toFixed(2);
+                    row.insertCell(4).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).speedAvg;
                     row.insertCell(5).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).mode;
                     row.insertCell(6).innerHTML= (JSON.parse(localStorage.getItem(localStorage.key(i)))).extraComments;
                     row.insertCell(7).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
