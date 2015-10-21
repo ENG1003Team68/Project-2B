@@ -6,7 +6,7 @@
         
         <div style='position:absolute;z-index:0;left:0;top:0;width:100%;height:100%'>
                 <img src='sonic4.jpeg' style='width:100%;height:100%' alt='[]' />
-                </div>
+        </div>
         
         <style>
             
@@ -45,22 +45,32 @@
     <body>
     
         <script>
-        
+            // Declaring Global Variables
+            // Creating an object where all data for the 'run' is stored.
             var Run = {
-                lat: 0 ,
-                lng: 0,
+                description: "" ,
+                extraComments: "",
+                mode: "",
+                distTravelledkm: 0,
+                speedAvg: 0,
                 hours: 0, 
                 minutes: 0,
                 seconds: 0,
                 tenths: 0,
-                description: "" ,
-                extraComments: ""
+                secsTotal: 0,
+                route: [] 
             };
-            <!-- Timer Function -->
+
+            var coordinates = {
+                    lat: 0,
+                    lng: 0
+                };
+            
             var time = 0;
             var running = 0;
             var select = 0;
             var modeWalk = 0, modeRun = 0, modeCycle = 0;
+            var currentMarker, startMarker;
             
             function startPause(){
                 if(modeWalk == 0 && modeCycle == 0 && modeRun == 0){
@@ -69,23 +79,56 @@
                     else{
                     select = 1;
                     }
-                if(running == 0 && select == 1){
+                if(running == 0 && select == 1 && time > 0){
+                    //App resumes from paused state. Route begins recording from last saved position, timer resumes and status changed to "Recording!"
+                    running = 2;
+                    increment();
+                    
+                    navigator.geolocation.getCurrentPosition(function(position){
+                    currentMarker= google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Current Point'    
+                    });
+                    });
+                    document.getElementById("play").innerHTML = "pause_circle_outline";
+                    document.getElementById("recordStatus").innerHTML = "Recording!";
+                }
+                else if(running == 0 && select == 1){
+                    //App starts. Route begins recording, timer starts and status changed to "Recording!"
                     running = 1;
                     increment();
                  
+                    navigator.geolocation.getCurrentPosition(function(position){
+                    currentMarker= new google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Current Point'    
+                    });
+                     startMarker= new google.maps.Marker({
+                            position:{lat: position.coords.latitude, lng: position.coords.longitude},
+                            map: map,
+                            title: 'Start Point'    
+                    });    
+                    });
+                    
+                    var intervalID = setInterval(initMap(), 100)
+                    
                     document.getElementById("play").innerHTML = "pause_circle_outline";
                     document.getElementById("recordStatus").innerHTML = "Recording!";
-                        }
+                }
+                    
                     else{
                         running = 0;
                         document.getElementById("play").innerHTML = "play_circle_outline";
+                        clearInterval(intervalID);
                     }
                 if(running == 0 && time > 0){
                 document.getElementById("recordStatus").innerHTML = "Paused";
                 }
             }
-
             
+
             function reset(){
                 if(running == 0 && time > 0){
                     running = 0;
@@ -94,6 +137,12 @@
                     modeWalk = 0;
                     modeRun = 0;
                     modeCycle = 0;
+                    Run.route = [];
+                    coordinates = { lat: 0, lng: 0 };
+                    Run.distTravelledkm = 0;
+                    Run.speedAvg = 0;
+                    runPath.setMap(null);
+                    
                     document.getElementById("output").innerHTML = "00:00:00:0";
                     document.getElementById("modeOutput").innerHTML = "Select an Activity";
                     document.getElementById("recordStatus").innerHTML = "Not Recording";
@@ -105,7 +154,7 @@
             }
             
             function increment(){
-                if(running == 1){
+                if(running == 1 || running == 2){
                 setTimeout(function(){
                     time++;
                     
@@ -125,29 +174,55 @@
                     }
                     document.getElementById("output").innerHTML = hours + ":" + mins + ":" + secs + ":" + tenths;
                     increment();  
-                }, 1);
+                }, 100);
                 } 
             }
             
-            var i = 0;
+            var i = Date.now();
             function finish(){
                 if(running == 0 && time > 0){
+                    
                     var description = prompt("Enter a description of your run:", "Enter Description...");   
                     Run.description = description; 
                     
                     var ExtraComments = prompt("Enter Extra Comments:", "Extra Comments...");   
                     
                     Run.extraComments = ExtraComments;
-                    //Run.lat = lat;
-                    //Run.lng = lng;
                     Run.hours = hours;
                     Run.minutes = mins;
                     Run.seconds = secs;
                     Run.tenths = tenths;
+                    getDistanceFromLatLngInKm();
+                    
+                    if(modeCycle == 1)
+                        Run.mode = "Cycling"; 
+                    else if (modeRun ==1)
+                        Run.mode = "Running";
+                    else if (modeWalk == 1)
+                        Run.mode = "Walking";
                     
                     var dataString = JSON.stringify(Run);
+                    
                     localStorage.setItem("runSummary"+i,dataString)
-                    i = i+1;
+                    i++
+                    
+                    //Erases all info and starts again
+                    running = 0;
+                    time = 0;
+                    select = 0;
+                    modeWalk = 0;
+                    modeRun = 0;
+                    modeCycle = 0;
+                    Run.route = [];
+                    coordinates = { lat: 0, lng: 0 };
+                    Run.distTravelledkm = 0;
+                    Run.speedAvg = 0;
+                    runPath.setMap(null);
+                    
+                    document.getElementById("output").innerHTML = "00:00:00:0";
+                    document.getElementById("modeOutput").innerHTML = "Select an Activity";
+                    document.getElementById("recordStatus").innerHTML = "Not Recording";
+                    alert("Run has been saved!");
                     
                 }
                 else if(running == 0 || time == 0){
@@ -200,6 +275,51 @@
                 else{
                 }
             }
+            
+            function getDistanceFromLatLngInKm(){
+                var R = 6371; // Radius of the earth in km
+                var distTotal = 0;
+                
+                for(var i = 0; i < Run.route.length - 1; i++){
+                    var lat1 = Run.route[i].lat;
+                    var lng1 = Run.route[i].lng;
+                    
+                    //console.log(JSON.stringify(lat1));
+                    //console.log(JSON.stringify(lng1)); 
+                    
+                    var lat2 = Run.route[i+1].lat;
+                    var lng2 = Run.route[i+1].lng;
+                
+                    //console.log(JSON.stringify(lat2));
+                    //console.log(JSON.stringify(lng2)); 
+                    
+                    var distLat = deg2rad(lat2-lat1);  // deg2rad below
+                    var distLng = deg2rad(lng2-lng1);     
+                    
+                    var a = 
+                    Math.sin(distLat/2) * Math.sin(distLat/2) +
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                    Math.sin(distLng/2) * Math.sin(distLng/2);
+                    
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                    distTotal += R * c; // Distance in km
+                    //console.log("Dist: " + JSON.stringify(distTotal));
+                }
+                    Run.distTravelledkm = distTotal;
+                    averageSpeed(Run.distTravelledkm);
+            }
+
+            function deg2rad(deg) {
+                return deg * (Math.PI/180)
+            }
+            
+            function averageSpeed(distance){
+                Run.secsTotal = (Run.hours) + (Run.minutes/60) + (Run.seconds/3600) + (Run.tenths/36000);
+                console.log(JSON.stringify(Run.secsTotal));
+                var speed = distance/Run.secsTotal; //Calculates average speed in km/h
+                Run.speedAvg = speed;
+            }
+            
             </script>
         
 <!-- Uses a header that scrolls with the text, rather than staying
@@ -241,63 +361,68 @@
                     <body>
                         <div id="map"></div>
                         <script type="text/javascript">
-
-                         
-                            var route = {
-                                title: "",
-                                path:[]
-                            };
                             
+                            var map, runPath;
                             
-                            var map;
                             function initMap() {
                                 map = new google.maps.Map(document.getElementById('map'), {
                                     center: {lat: -37.9120467, lng: 145.1343136},
                                     zoom: 17
-                                      mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                    scrollwheel: false,
-                                    draggable: false,
-                                    disableDefaultUI: true
                                     });
-                            
-                                 navigator.geolocation.watchPosition(positionUpdate,undefined,{enableHighAccuracy: true})
-                            
+                                    runPath = new google.maps.Polyline({
+                                        geodesic: true,
+                                        strokeColor: '#FF0000',
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 2
+                                    });
+
+                                    
+                                    runPath.setMap(map);
+                                
+                                    if(navigator.geolocation && running == 1 || running == 2){
+                                        watch = navigator.geolocation.watchPosition(positionUpdate) //,undefined,{enableHighAccuracy: true})
+                                    }
+
                             //runs every second and updates path and dom
                             function positionUpdate(position) {
-                                map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
-route = route.latlng
-                                if (running = 1){
-                                    run.lat = position.coords.latitude;
-                                    run.lng = position.coords.longitude; 
+                                if (running == 1 || running == 2){
+                                    map.panTo({lat: position.coords.latitude, lng: position.coords.longitude})
+                                    var tempCoord = {
+                                        lat: 0,
+                                        lng: 0
+                                    };
+                    
+                                    tempCoord.lat = position.coords.latitude;
+                                    tempCoord.lng = position.coords.longitude;
+                    
                                     currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)); 
                                     
-                                    route.push(run)
-                                    
-                                var routePolyline = new google.maps.Polyline({
-                                    path: route.path,
-    			                    map: map,
-                                    strokeColor: '#FF0000',
-                                    strokeOpacity: 1.0,
-                                    strokeWeight: 2
-                                    });
-                                  
-                                }
+                                    //Testing code in the console
+                                    console.log(JSON.stringify(Run.route));
 
-                                else if (running = 0){
-                                    // storing current position as the initial value of path so that the polyline will have an initial value on record.
-              	                 run.lat = position.coords.latitude;
-                                    run.lng = position.coords.longitude; 
+                                    Run.route.push(tempCoord);
                                     
+                                    //Testing code in the console
+                                    console.log(JSON.stringify(Run.route));
                                     
-                                    route.path[0]=run;
-                                }
+                                    addLatLng(position);
 
-                                positionMarker.setPosition({lat: currentPos.coords.latitude, lng: currentPos.coords.longitude});
                                 }
-                            
+                               
+                            }
                             }
                             
-
+                            function addLatLng(position){
+                                    var path = runPath.getPath();
+                                    path.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                            
+                                    var marker = new google.maps.Marker({
+                                        position: currentMarker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude)),
+                                        title: '#' + path.getLength(),
+                                        map: map
+                                    });
+                        
+                            }
                       
                         </script>
                         
@@ -309,7 +434,7 @@ route = route.latlng
                 </div>
                 
                 <center>
-                <div>   
+                <div>
                     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style=";margin-top:2%;margin-bottom:2%;margin-right:2%;margin-left:2%;" id="recordTable">
                         <thead>
                             <tr>
