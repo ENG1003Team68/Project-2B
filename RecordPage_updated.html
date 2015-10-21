@@ -195,9 +195,9 @@
                     
                     var Weight = prompt("Enter Weight:", "Weight...");
                     
-                    var AvgHeartRate = prompt("Enter avarage heart rate:", "Heart rate...");
+                    var AvgHeartRate = prompt("Enter avarage heart rate(bpm):", "Heart rate...");
                     
-                    Run.calories = ((Age*0.2017)-(Weight*0.09036)+(AvgHeartRate*0.6309)-55.0969)*(time/600)/4.184;
+                    Run.calories = Math.round(((Age*0.2017)-(Weight*0.09036)+(AvgHeartRate*0.6309)-55.0969)*(time/600)/4.184);
                     Run.hours = hours;
                     Run.minutes = mins;
                     Run.seconds = secs;
